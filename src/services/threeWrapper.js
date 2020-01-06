@@ -15,9 +15,9 @@ export class ThreeWrapper {
 
     this.scene = new THREE.Scene()
     this.camera = new THREE.PerspectiveCamera(
-      75, // fov
+      55, // fov
       width / height, // aspect ratio
-      0.0001, // near plane
+      1, // near plane
       2000 // far plane
     )
     this.camera.position.set(0, 0, 80)
@@ -46,7 +46,7 @@ export class ThreeWrapper {
     const { scene } = this
 
     const spotlight = new THREE.PointLight(0xffffff)
-    spotlight.position.set(-20, 30, 55)
+    spotlight.position.set(0, 250, 0)
     scene.add(spotlight)
 
     this.terrain = new Terrain()
