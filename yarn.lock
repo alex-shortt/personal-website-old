@@ -7652,6 +7652,11 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
+perlin-noise-3d@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/perlin-noise-3d/-/perlin-noise-3d-0.5.0.tgz#227598c807822e3d10d2311758b403c33bf16e8a"
+  integrity sha512-XMFISPelMPqVNdEKznLp77Yk4TL+mHfzwcTt7rcIVT1fv3S+Tbl6xiWslwWEPUTKGDRY2Wo9WFChcqbM9q4tTw==
+
 pify@^2.0.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
@@ -10140,6 +10145,11 @@ text-table@0.2.0, text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
+three.terrain.js@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/three.terrain.js/-/three.terrain.js-1.6.0.tgz#e4f7826dd6cad39ab11ad725ec8c075a5a63f258"
+  integrity sha512-b84y+fiZAsZyc+hV1rUBAK7auKF/0xQqqkVX9maPj5RJQBnEm8bVsgSdE55TQfXeVOSmHx8oCRG2O8CTD93zdQ==
+
 three@^0.111.0:
   version "0.111.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.111.0.tgz#9cedb73e79b7f6bf2440cb67a273f883faa923b6"
@@ -10556,7 +10566,7 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid@^3.0.1, uuid@^3.3.2:
+uuid@^3.0.1, uuid@^3.3.2, uuid@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
   integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==

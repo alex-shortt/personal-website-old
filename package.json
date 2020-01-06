@@ -73,6 +73,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "normalize.css": "^8.0.1",
+    "perlin-noise-3d": "^0.5.0",
     "query-string": "^6.4.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -82,8 +83,10 @@
     "react-scripts": "2.1.8",
     "styled-components": "^4.2.0",
     "three": "^0.111.0",
+    "three.terrain.js": "^1.6.0",
     "typeface-roboto": "^0.0.54",
     "use-deep-compare-effect": "^1.2.0",
-    "use-react-router": "^1.0.7"
+    "use-react-router": "^1.0.7",
+    "uuid": "^3.3.3"
   }
 }

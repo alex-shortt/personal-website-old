@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react"
 import styled from "styled-components/macro"
 
 import { ThreeWrapper } from "services/threeWrapper"
-import Helmet from "components/Helmet"
 
 const Container = styled.div`
   width: 100%;
@@ -23,9 +22,5 @@ export default function View(props) {
     }
   }, [setup, threeWrapper])
 
-  return (
-    <Container ref={containerRef}>
-      <Helmet title="View" />
-    </Container>
-  )
+  return <Container ref={containerRef} />
 }
