@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import Stats from "stats.js"
 
 import Terrain from "world/terrain"
 
@@ -15,13 +15,13 @@ export class ThreeWrapper {
 
     this.scene = new THREE.Scene()
     this.camera = new THREE.PerspectiveCamera(
-      55, // fov
+      40, // fov
       width / height, // aspect ratio
       1, // near plane
       2000 // far plane
     )
-    this.camera.position.set(0, 0, 80)
-    this.controls = new OrbitControls(this.camera, containerRef)
+    this.camera.position.set(0, 80, 0)
+    this.camera.lookAt(0, 0, 300)
 
     this.clock = new THREE.Clock()
 
@@ -29,7 +29,18 @@ export class ThreeWrapper {
     this.renderer.setSize(width, height)
     containerRef.appendChild(this.renderer.domElement) // mount using React ref
 
+    this.stats = new Stats()
+    document.body.appendChild(this.stats.dom)
+
     window.addEventListener("resize", this.handleWindowResize)
+    window.addEventListener("mousemove", this.handleMouseMove)
+  }
+
+  handleMouseMove = event => {
+    const { spotlight } = this
+    const { offsetX, offsetY } = event
+    const x = (offsetX / window.innerWidth - 0.5) * 200 * -1
+    spotlight.position.set(x, 350, 0)
   }
 
   handleWindowResize = () => {
@@ -45,8 +56,13 @@ export class ThreeWrapper {
   addCustomSceneObjects = () => {
     const { scene } = this
 
-    const spotlight = new THREE.PointLight(0xffffff)
-    spotlight.position.set(0, 250, 0)
+    this.spotlight = new THREE.SpotLight(0xffffff)
+
+    const { spotlight } = this
+    spotlight.position.set(0, 150, 0)
+    spotlight.intensity = 0.5
+    spotlight.penumbra = 1
+
     scene.add(spotlight)
 
     this.terrain = new Terrain()
@@ -54,10 +70,12 @@ export class ThreeWrapper {
   }
 
   startAnimationLoop = () => {
-    const { terrain, renderer, scene, camera, clock } = this
+    const { terrain, renderer, scene, camera, clock, stats } = this
 
+    stats.begin()
     terrain.update(clock.getElapsedTime() / 2)
     renderer.render(scene, camera)
+    stats.end()
     this.requestID = window.requestAnimationFrame(this.startAnimationLoop)
   }
 

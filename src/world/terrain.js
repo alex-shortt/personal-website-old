@@ -1,32 +1,48 @@
 import uuid from "uuid/v4"
 import PerlinNoise from "perlin-noise-3d"
 import * as THREE from "three"
+import * as dat from "dat.gui"
 
 export default class Terrain {
   constructor(props = {}) {
-    const { seed = Math.random() * 10000 } = props
+    const { seed = Math.random() * 10000, width = 800, height = 900 } = props
 
-    this.seed = seed
     this.noise = new PerlinNoise()
     this.noise.noiseSeed(seed)
 
-    this.geometry = new THREE.PlaneGeometry(1000, 1000, 250, 250)
+    this.resolution = 500 // zoom
+    this.density = 17 // grooves per unit distance
+    this.height = 26 // height of the grooves
+    this.speed = 0.69
+
+    this.WIDTH = width
+    this.HEIGHT = height
+
+    this.gui = new dat.GUI()
+    this.gui.add(this, "resolution", 0, 1000)
+    this.gui.add(this, "density", 0, 100)
+    this.gui.add(this, "height", 0, 100)
+    this.gui.add(this, "speed", 0, 2)
+
+    this.setup()
+    this.update(0)
+  }
+
+  setup() {
+    const { WIDTH, HEIGHT } = this
+    this.geometry = new THREE.PlaneGeometry(WIDTH, HEIGHT, 50, 50)
     this.geometry.dynamic = true
 
     const material = new THREE.MeshPhongMaterial({
-      shininess: 8,
-      specular: 0xffffff22,
       shading: THREE.FlatShading,
       vertexColors: THREE.FaceColors
     })
 
     this.plane = new THREE.Mesh(this.geometry, material)
-    const { plane, noise } = this
+    const { plane } = this
 
     plane.rotation.x = -Math.PI / 2
     plane.position.y = -30
-
-    this.maxarea = 1
 
     for (let i = 0; i < plane.geometry.vertices.length; i += 1) {
       const vertex = plane.geometry.vertices[i]
@@ -34,11 +50,6 @@ export default class Terrain {
       vertex.yi = vertex.y
       vertex.zi = vertex.z
     }
-
-    console.log(plane)
-    console.log()
-
-    this.update(0)
   }
 
   addToScene(scene) {
@@ -48,18 +59,22 @@ export default class Terrain {
   }
 
   update(time) {
-    const { plane, noise } = this
-
-    const r = 500
-    const p = 30
-    const h = 30
-    const { width, height } = plane.geometry.parameters
+    const {
+      plane,
+      noise,
+      WIDTH,
+      HEIGHT,
+      resolution: r,
+      density: d,
+      height: h,
+      speed: s
+    } = this
 
     for (let i = 0; i < plane.geometry.vertices.length; i += 1) {
       const vertex = plane.geometry.vertices[i]
       const vNoise =
-        noise.get((vertex.x + width / 2) / r, (vertex.y + height / 2) / r) * p
-      vertex.z = Math.cos(time + vNoise) * h
+        noise.get((vertex.x + WIDTH / 2) / r, (vertex.y + HEIGHT / 2) / r) * d
+      vertex.z = Math.cos(time * s + vNoise) * h
     }
 
     for (let i = 0; i < plane.geometry.faces.length; i += 1) {
@@ -70,35 +85,16 @@ export default class Terrain {
       const area = faceArea(va, vb, vc)
       const zDist = zOffset(va, vb, vc)
 
-      if (this.maxarea < zDist) {
-        this.maxarea = zDist
-        console.log("maxarea: ", zDist)
-      }
+      const hue = (time * s) % 1
+      const sat = 1 - zDist / h
+      const value = 1 - zDist / h
+      const [hu, sa, l] = hsvToHSL(hue, sat, value)
 
-      const hue = (time / 10) % 1
-      const sat = zDist / this.maxarea
-      const value = zDist / this.maxarea
-      const [hu, s, l] = hsvToHSL(hue, sat, value)
-
-      face.color.setHSL(hu, s, l)
+      face.color.setHSL(hu, sa, l)
     }
 
     plane.geometry.verticesNeedUpdate = true
-    plane.geometry.colorsNeedUpdate = true
   }
-}
-
-function randNum(n) {
-  const p =
-    (Math.random() +
-      Math.random() +
-      Math.random() +
-      Math.random() +
-      Math.random() +
-      Math.random() -
-      3) /
-    3
-  return p * n
 }
 
 function faceArea(va, vb, vc) {
