@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import Stats from "stats.js"
 
-import Terrain from "world/terrain"
+import NoiseBox from "world/noisebox"
 
 export class ThreeWrapper {
   sceneSetup = containRef => {
@@ -10,23 +10,42 @@ export class ThreeWrapper {
     const { containerRef } = this
 
     // get container dimensions and use them for scene sizing
-    const width = containerRef.clientWidth
-    const height = containerRef.clientHeight
+    const { clientWidth: width, clientHeight: height } = containerRef
 
     this.scene = new THREE.Scene()
+
+    const frustumSize = 600
+    const aspect = width / height
+    const orthoWidth = (frustumSize * aspect) / 2
+    const orthoHeight = frustumSize / 2
+
     this.camera = new THREE.PerspectiveCamera(
-      40, // fov
+      50, // fov
       width / height, // aspect ratio
       1, // near plane
-      2000 // far plane
+      2000
     )
-    this.camera.position.set(0, 80, 0)
-    this.camera.lookAt(0, 0, 300)
+
+    // setup camera
+    // this.camera = new THREE.OrthographicCamera(
+    //   -orthoWidth,
+    //   orthoWidth,
+    //   orthoHeight,
+    //   -orthoHeight,
+    //   1,
+    //   1700
+    // )
+    // this.cameraHelper = new THREE.CameraHelper(this.camera)
+    // this.scene.add(this.cameraHelper)
+    this.camera.position.set(0, 0, 0)
+    this.camera.lookAt(0, 0, 500)
 
     this.clock = new THREE.Clock()
 
-    this.renderer = new THREE.WebGLRenderer({ alpha: true })
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
     this.renderer.setSize(width, height)
+    this.renderer.shadowMap.enabled = true
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
     containerRef.appendChild(this.renderer.domElement) // mount using React ref
 
     this.stats = new Stats()
@@ -37,43 +56,40 @@ export class ThreeWrapper {
   }
 
   handleMouseMove = event => {
-    const { spotlight } = this
-    const { offsetX, offsetY } = event
-    const x = (offsetX / window.innerWidth - 0.5) * 200
-    spotlight.position.set(x, 250, 0)
+    // foo
   }
 
   handleWindowResize = () => {
-    const { containerRef, renderer, camera } = this
-    const width = containerRef.clientWidth
-    const height = containerRef.clientHeight
+    const { containerRef, renderer, camera, noisebox } = this
+    const { clientWidth: width, clientHeight: height } = containerRef
 
     renderer.setSize(width, height)
     camera.aspect = width / height
     camera.updateProjectionMatrix()
+
+    noisebox.handleResize()
   }
 
   addCustomSceneObjects = () => {
-    const { scene, camera } = this
+    const { scene } = this
 
-    this.spotlight = new THREE.SpotLight(0xffffff)
+    // add ambient light
+    // this.ambientLight = new THREE.AmbientLight(0xffffff)
+    // this.ambientLight.intensity = 0.2
+    // this.ambientLight.penumbra = 1
+    // scene.add(this.ambientLight)
 
-    const { spotlight } = this
-    spotlight.position.set(0, 250, 0)
-    spotlight.intensity = 8
-    spotlight.penumbra = 1
+    // add other light
 
-    scene.add(spotlight)
-
-    this.terrain = new Terrain(camera)
-    this.terrain.addToScene(scene)
+    this.noisebox = new NoiseBox()
+    this.noisebox.addToScene(scene)
   }
 
   startAnimationLoop = () => {
-    const { terrain, renderer, scene, camera, clock, stats } = this
+    const { noisebox, renderer, scene, camera, clock, stats } = this
 
     stats.begin()
-    terrain.update(clock.getElapsedTime() / 2)
+    noisebox.update(clock.getElapsedTime())
     renderer.render(scene, camera)
     stats.end()
     this.requestID = window.requestAnimationFrame(this.startAnimationLoop)
