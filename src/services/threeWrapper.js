@@ -39,8 +39,8 @@ export class ThreeWrapper {
   handleMouseMove = event => {
     const { spotlight } = this
     const { offsetX, offsetY } = event
-    const x = (offsetX / window.innerWidth - 0.5) * 200 * -1
-    spotlight.position.set(x, 350, 0)
+    const x = (offsetX / window.innerWidth - 0.5) * 200
+    spotlight.position.set(x, 250, 0)
   }
 
   handleWindowResize = () => {
@@ -54,18 +54,18 @@ export class ThreeWrapper {
   }
 
   addCustomSceneObjects = () => {
-    const { scene } = this
+    const { scene, camera } = this
 
     this.spotlight = new THREE.SpotLight(0xffffff)
 
     const { spotlight } = this
-    spotlight.position.set(0, 150, 0)
-    spotlight.intensity = 0.5
+    spotlight.position.set(0, 250, 0)
+    spotlight.intensity = 8
     spotlight.penumbra = 1
 
     scene.add(spotlight)
 
-    this.terrain = new Terrain()
+    this.terrain = new Terrain(camera)
     this.terrain.addToScene(scene)
   }
 

@@ -4,9 +4,10 @@ import * as THREE from "three"
 import * as dat from "dat.gui"
 
 export default class Terrain {
-  constructor(props = {}) {
+  constructor(camera, props = {}) {
     const { seed = Math.random() * 10000, width = 800, height = 900 } = props
 
+    this.camera = camera
     this.noise = new PerlinNoise()
     this.noise.noiseSeed(seed)
 
@@ -24,11 +25,35 @@ export default class Terrain {
     this.gui.add(this, "height", 0, 100)
     this.gui.add(this, "speed", 0, 2)
 
+    this.clickIndex = 0
+
+    this.raycaster = new THREE.Raycaster()
+    window.addEventListener("mousedown", this.onMouseDown)
+
     this.setup()
     this.update(0)
   }
 
-  setup() {
+  onMouseDown = e => {
+    const { raycaster, camera, plane } = this
+    e.preventDefault()
+
+    const mouse = new THREE.Vector2(
+      (e.clientX / window.innerWidth) * 2 - 1,
+      -(e.clientY / window.innerHeight) * 2 + 1
+    )
+    raycaster.setFromCamera(mouse, camera)
+
+    const intersects = raycaster.intersectObjects([plane])
+
+    for (let i = 0; i < intersects.length; i += 1) {
+      const { face } = intersects[i]
+      this.clickIndex += 1
+      face.clicked.push([this.clickIndex, 0])
+    }
+  }
+
+  setup = () => {
     const { WIDTH, HEIGHT } = this
     this.geometry = new THREE.PlaneGeometry(WIDTH, HEIGHT, 50, 50)
     this.geometry.dynamic = true
@@ -50,20 +75,26 @@ export default class Terrain {
       vertex.yi = vertex.y
       vertex.zi = vertex.z
     }
+
+    for (let i = 0; i < plane.geometry.faces.length; i += 1) {
+      const face = plane.geometry.faces[i]
+      face.clicked = []
+    }
   }
 
-  addToScene(scene) {
+  addToScene = scene => {
     const { plane } = this
     this.scene = scene
     scene.add(plane)
   }
 
-  update(time) {
+  update = time => {
     const {
       plane,
       noise,
       WIDTH,
       HEIGHT,
+      camera,
       resolution: r,
       density: d,
       height: h,
@@ -74,18 +105,22 @@ export default class Terrain {
       const vertex = plane.geometry.vertices[i]
       const vNoise =
         noise.get((vertex.x + WIDTH / 2) / r, (vertex.y + HEIGHT / 2) / r) * d
-      vertex.z = Math.cos(time * s + vNoise) * h
+      const playerOffset = Math.pow(vertex.distanceTo(camera.position), 2) / 20
+      const heightMult = Math.min(Math.max(0, playerOffset), 1)
+
+      vertex.z = Math.cos(time * s + vNoise) * h * heightMult
     }
 
     for (let i = 0; i < plane.geometry.faces.length; i += 1) {
       const face = plane.geometry.faces[i]
+
       const va = plane.geometry.vertices[face.a]
       const vb = plane.geometry.vertices[face.b]
       const vc = plane.geometry.vertices[face.c]
       const area = faceArea(va, vb, vc)
       const zDist = zOffset(va, vb, vc)
 
-      const hue = (time * s) % 1
+      const hue = (time * s * 0.1) % 1
       const sat = 1 - zDist / h
       const value = 1 - zDist / h
       const [hu, sa, l] = hsvToHSL(hue, sat, value)
@@ -94,6 +129,7 @@ export default class Terrain {
     }
 
     plane.geometry.verticesNeedUpdate = true
+    plane.geometry.colorsNeedUpdate = true
   }
 }
 
