@@ -1,97 +1,101 @@
 import * as THREE from "three"
 import Stats from "stats.js"
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
 import NoiseBox from "world/noisebox"
+import Environment from "world/environment"
 
 export class ThreeWrapper {
-  sceneSetup = containRef => {
-    this.containerRef = containRef
-
-    const { containerRef } = this
-
+  threeSetup = containerRef => {
     // get container dimensions and use them for scene sizing
     const { clientWidth: width, clientHeight: height } = containerRef
 
-    this.scene = new THREE.Scene()
+    // scene
+    const scene = new THREE.Scene()
+    scene.fog = new THREE.Fog(0x000000, 250, 2000)
 
-    const frustumSize = 600
-    const aspect = width / height
-    const orthoWidth = (frustumSize * aspect) / 2
-    const orthoHeight = frustumSize / 2
+    // camera
+    const camera = new THREE.PerspectiveCamera(50, width / height, 2, 2000)
+    camera.position.set(0, 10, 0)
+    camera.lookAt(0, 10, 500)
 
-    this.camera = new THREE.PerspectiveCamera(
-      50, // fov
-      width / height, // aspect ratio
-      1, // near plane
-      2000
-    )
+    // renderer
+    const renderer = new THREE.WebGLRenderer({ antialias: true })
+    renderer.setSize(width, height)
+    renderer.setClearColor(scene.fog.color, 1)
+    renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.autoClear = false
+    containerRef.appendChild(renderer.domElement) // mount using React ref
 
-    // setup camera
-    // this.camera = new THREE.OrthographicCamera(
-    //   -orthoWidth,
-    //   orthoWidth,
-    //   orthoHeight,
-    //   -orthoHeight,
-    //   1,
-    //   1700
-    // )
-    // this.cameraHelper = new THREE.CameraHelper(this.camera)
-    // this.scene.add(this.cameraHelper)
-    this.camera.position.set(0, 0, 0)
-    this.camera.lookAt(0, 0, 500)
+    // stats
+    const stats = new Stats()
+    document.body.appendChild(stats.dom)
 
-    this.clock = new THREE.Clock()
+    // exports
+    this.containerRef = containerRef
+    this.scene = scene
+    this.camera = camera
+    this.renderer = renderer
+    this.stats = stats
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    this.renderer.setSize(width, height)
-    this.renderer.shadowMap.enabled = true
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
-    containerRef.appendChild(this.renderer.domElement) // mount using React ref
-
-    this.stats = new Stats()
-    document.body.appendChild(this.stats.dom)
-
+    // events
     window.addEventListener("resize", this.handleWindowResize)
-    window.addEventListener("mousemove", this.handleMouseMove)
-  }
-
-  handleMouseMove = event => {
-    // foo
   }
 
   handleWindowResize = () => {
-    const { containerRef, renderer, camera, noisebox } = this
+    const { containerRef, renderer, camera, noisebox, environment } = this
     const { clientWidth: width, clientHeight: height } = containerRef
 
     renderer.setSize(width, height)
     camera.aspect = width / height
     camera.updateProjectionMatrix()
 
+    environment.handleResize()
     noisebox.handleResize()
   }
 
-  addCustomSceneObjects = () => {
-    const { scene } = this
+  sceneSetup = () => {
+    const { renderer, scene } = this
 
-    // add ambient light
-    // this.ambientLight = new THREE.AmbientLight(0xffffff)
-    // this.ambientLight.intensity = 0.2
-    // this.ambientLight.penumbra = 1
-    // scene.add(this.ambientLight)
+    const noisebox = new NoiseBox()
+    const environment = new Environment()
 
-    // add other light
+    this.addControls()
+    environment.addToScene(renderer, scene)
+    noisebox.addToScene(scene)
+    scene.add(environment)
 
-    this.noisebox = new NoiseBox()
-    this.noisebox.addToScene(scene)
+    // exports
+    this.noisebox = noisebox
+    this.environment = environment
+  }
+
+  addControls = () => {
+    const { renderer, camera } = this
+
+    // add camera
+    const controls = new OrbitControls(camera, renderer.domElement)
+    controls.maxPolarAngle = Math.PI * 0.495
+    controls.target.set(0, 10, 50)
+    controls.minDistance = 40.0
+    controls.maxDistance = 200.0
+    controls.update()
+
+    // exports
+    this.controls = controls
   }
 
   startAnimationLoop = () => {
-    const { noisebox, renderer, scene, camera, clock, stats } = this
+    const { noisebox, renderer, scene, camera, environment, stats } = this
 
     stats.begin()
-    noisebox.update(clock.getElapsedTime())
+    noisebox.render(renderer, scene)
+    environment.update()
     renderer.render(scene, camera)
     stats.end()
+
     this.requestID = window.requestAnimationFrame(this.startAnimationLoop)
   }
 
