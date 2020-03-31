@@ -1,7 +1,9 @@
 import PerlinNoise from "perlin-noise-3d"
 import * as THREE from "three"
 
-export default class Terrain {
+import NoiseSizer from "services/noisesizer"
+
+export default class NoiseBox {
   constructor(props = {}) {
     const { seed = Math.random() * 10000 } = props
 
@@ -10,13 +12,13 @@ export default class Terrain {
     noise.noiseSeed(seed)
 
     // constants
-    this.distance = 700
+    this.distance = 900
     this.resolution = 328 // zoom
     this.density = 20 // grooves per unit distance
-    this.depth = 50 // depth of the grooves
+    this.depth = 98 // depth of the grooves
     this.speed = 0.5
-    this.WIDTH = window.innerWidth * 0.5
-    this.HEIGHT = window.innerHeight * 0.5
+    this.WIDTH = NoiseSizer.getWidth()
+    this.HEIGHT = NoiseSizer.getHeight()
     this.lightIntensity = 0.3
 
     // clock
@@ -31,10 +33,10 @@ export default class Terrain {
   }
 
   setupPlane = () => {
-    const { WIDTH, HEIGHT, depth, distance } = this
+    const { WIDTH, HEIGHT, distance } = this
 
     // geometry
-    const geometry = new THREE.PlaneGeometry(WIDTH, HEIGHT, 200, 200)
+    const geometry = new THREE.PlaneGeometry(2000, 2000, 200, 200)
     geometry.dynamic = true
 
     // material
@@ -47,8 +49,9 @@ export default class Terrain {
     // plane
     const plane = new THREE.Mesh(geometry, material)
     plane.rotation.x = Math.PI
-    plane.position.z = distance + depth
-    plane.position.y = HEIGHT / 4
+    plane.position.z = distance
+    plane.position.y = HEIGHT / 2
+    plane.scale.set(WIDTH / 2000, HEIGHT / 2000, 1)
 
     // assign initial positions to verticies
     for (let i = 0; i < geometry.vertices.length; i += 1) {
@@ -67,10 +70,10 @@ export default class Terrain {
 
     // create light
     const light1 = new THREE.PointLight(0xff0000, lightIntensity)
-    light1.position.set(WIDTH / 4, HEIGHT / 4, distance - depth - 50)
+    light1.position.set(WIDTH / 4, HEIGHT / 2, distance - depth - 50)
 
     const light2 = new THREE.PointLight(0xff0000, lightIntensity)
-    light2.position.set(-WIDTH / 4, HEIGHT / 4, distance - depth - 50)
+    light2.position.set(-WIDTH / 4, HEIGHT / 2, distance - depth - 50)
 
     // export
     this.lights = [light1, light2]
@@ -103,18 +106,18 @@ export default class Terrain {
 
   render = (renderer, scene) => {
     const { plane, noise, WIDTH, HEIGHT, clock, lights } = this
-    const { resolution: r, density: d, depth, speed: s } = this
+    const { resolution, density, depth, speed } = this
 
     const time = clock.getElapsedTime()
 
     // update noise
     for (let i = 0; i < plane.geometry.vertices.length; i += 1) {
       const vertex = plane.geometry.vertices[i]
-      const x = (vertex.x + WIDTH / 2) / r
-      const y = (vertex.y + HEIGHT / 2) / r
-      const vNoise = noise.get(x, y) * d
+      const x = (vertex.x + WIDTH / 2) / resolution
+      const y = (vertex.y + HEIGHT / 2) / resolution
+      const vNoise = noise.get(x, y) * density
 
-      let heightMult = Math.cos(time * s + vNoise) * 0.5 + 0.5
+      let heightMult = Math.cos(time * speed + vNoise) * 0.5 + 0.5
       if (heightMult > 0.99) {
         heightMult = 0.99
       }
@@ -124,7 +127,7 @@ export default class Terrain {
 
     // update lights
     for (const [i, light] of lights.entries()) {
-      const hue = (time * s * s * s + i * 0.5) % 1
+      const hue = (time * speed * 0.3 + i * 0.5) % 1
       const sat = 1
       const value = 1
       const [hu, sa, l] = hsvToHSL(hue, sat, value)
@@ -138,15 +141,17 @@ export default class Terrain {
   }
 
   handleResize = () => {
-    this.WIDTH = window.innerWidth * 0.5
-    this.HEIGHT = window.innerHeight * 0.5
-    // this.plane.geometry = new THREE.PlaneBufferGeometry(
-    //   this.WIDTH,
-    //   this.HEIGHT,
-    //   200,
-    //   200
-    // )
-    // this.setupPlane()
+    const { plane } = this
+
+    const width = NoiseSizer.getWidth()
+    const height = NoiseSizer.getHeight()
+
+    // update plane
+    plane.scale.set(width / 2000, height / 2000, 1)
+    plane.position.y = height / 2
+
+    this.WIDTH = width
+    this.HEIGHT = height
   }
 }
 

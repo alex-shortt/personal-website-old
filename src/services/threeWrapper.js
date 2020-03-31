@@ -4,6 +4,7 @@ import * as dat from "dat.gui"
 
 import NoiseBox from "world/noisebox"
 import Environment from "world/environment"
+import NoiseSizer from "services/noisesizer"
 
 export class ThreeWrapper {
   threeSetup = containerRef => {
@@ -16,8 +17,8 @@ export class ThreeWrapper {
 
     // camera
     const camera = new THREE.PerspectiveCamera(50, width / height, 2, 2000)
-    camera.position.set(0, 100, 0)
-    camera.lookAt(0, 100, 1200)
+    camera.position.set(0, NoiseSizer.getCameraHeight(), 0)
+    camera.lookAt(0, camera.position.y, 1200)
 
     // renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -49,13 +50,19 @@ export class ThreeWrapper {
   }
 
   handleWindowResize = () => {
-    const { containerRef, renderer, camera, noisebox, environment } = this
+    const { containerRef, renderer, camera, environment, noisebox } = this
     const { clientWidth: width, clientHeight: height } = containerRef
 
+    // resize renderer
     renderer.setSize(width, height)
+
+    // camera
     camera.aspect = width / height
     camera.updateProjectionMatrix()
+    camera.position.set(0, NoiseSizer.getCameraHeight(), 0)
+    camera.lookAt(0, camera.position.y, 1200)
 
+    // resize classes
     environment.handleResize()
     noisebox.handleResize()
   }
@@ -69,29 +76,12 @@ export class ThreeWrapper {
     const environment = new Environment()
     environment.addGuiFolder(gui)
 
-    this.addControls()
     environment.addToScene(renderer, scene)
     noisebox.addToScene(scene)
 
     // exports
     this.noisebox = noisebox
     this.environment = environment
-  }
-
-  addControls = () => {
-    const { renderer, camera, scene } = this
-
-    // add camera
-    // const controls = new OrbitControls(camera, renderer.domElement)
-    // controls.maxPolarAngle = Math.PI * 0.495
-    // camera.position.set(0, 400, 0)
-    // camera.lookAt(new THREE.Vector3(0, 400, 1200))
-    // controls.minDistance = 40.0
-    // controls.maxDistance = 200.0
-    // controls.update()
-
-    // exports
-    // this.controls = controls
   }
 
   startAnimationLoop = () => {
