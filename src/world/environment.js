@@ -6,7 +6,7 @@ import waterNormalsImg from "assets/textures/waternormals.jpg"
 
 export default class Environment {
   constructor(props = {}) {
-    const { time = 0 } = props
+    const { time = 0.48 } = props
 
     // directional light
     const light = new THREE.DirectionalLight(0xffffff, 0.8)
@@ -64,6 +64,11 @@ export default class Environment {
     scene.add(water)
   }
 
+  addGuiFolder = gui => {
+    const folder = gui.addFolder("Environment")
+    folder.add(this, "time", 0, 1, 0.01).onChange(this.updateSun)
+  }
+
   updateSun = () => {
     const { time, light, sky, water } = this
 
@@ -84,10 +89,21 @@ export default class Environment {
     )
 
     water.material.uniforms.sunDirection.value.copy(light.position).normalize()
+
+    this.needsCameraUpdate = true
   }
 
-  update = () => {
-    const { water } = this
+  render = (renderer, scene) => {
+    const { water, cubeCamera, sky, needsCameraUpdate = false } = this
+
+    if (needsCameraUpdate) {
+      cubeCamera.update(renderer, sky)
+
+      // eslint-disable-next-line no-param-reassign
+      scene.background = cubeCamera.renderTarget
+
+      this.needsCameraUpdate = false
+    }
 
     water.material.uniforms.time.value += 1.0 / 120.0
   }

@@ -1,6 +1,6 @@
 import * as THREE from "three"
 import Stats from "stats.js"
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import * as dat from "dat.gui"
 
 import NoiseBox from "world/noisebox"
 import Environment from "world/environment"
@@ -16,8 +16,8 @@ export class ThreeWrapper {
 
     // camera
     const camera = new THREE.PerspectiveCamera(50, width / height, 2, 2000)
-    camera.position.set(0, 10, 0)
-    camera.lookAt(0, 10, 500)
+    camera.position.set(0, 100, 0)
+    camera.lookAt(0, 100, 1200)
 
     // renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -33,12 +33,16 @@ export class ThreeWrapper {
     const stats = new Stats()
     document.body.appendChild(stats.dom)
 
+    // gui
+    const gui = new dat.GUI()
+
     // exports
     this.containerRef = containerRef
     this.scene = scene
     this.camera = camera
     this.renderer = renderer
     this.stats = stats
+    this.gui = gui
 
     // events
     window.addEventListener("resize", this.handleWindowResize)
@@ -57,15 +61,17 @@ export class ThreeWrapper {
   }
 
   sceneSetup = () => {
-    const { renderer, scene } = this
+    const { renderer, scene, gui } = this
 
     const noisebox = new NoiseBox()
+    noisebox.addGuiFolder(gui)
+
     const environment = new Environment()
+    environment.addGuiFolder(gui)
 
     this.addControls()
     environment.addToScene(renderer, scene)
     noisebox.addToScene(scene)
-    scene.add(environment)
 
     // exports
     this.noisebox = noisebox
@@ -73,18 +79,19 @@ export class ThreeWrapper {
   }
 
   addControls = () => {
-    const { renderer, camera } = this
+    const { renderer, camera, scene } = this
 
     // add camera
-    const controls = new OrbitControls(camera, renderer.domElement)
-    controls.maxPolarAngle = Math.PI * 0.495
-    controls.target.set(0, 10, 50)
-    controls.minDistance = 40.0
-    controls.maxDistance = 200.0
-    controls.update()
+    // const controls = new OrbitControls(camera, renderer.domElement)
+    // controls.maxPolarAngle = Math.PI * 0.495
+    // camera.position.set(0, 400, 0)
+    // camera.lookAt(new THREE.Vector3(0, 400, 1200))
+    // controls.minDistance = 40.0
+    // controls.maxDistance = 200.0
+    // controls.update()
 
     // exports
-    this.controls = controls
+    // this.controls = controls
   }
 
   startAnimationLoop = () => {
@@ -92,7 +99,7 @@ export class ThreeWrapper {
 
     stats.begin()
     noisebox.render(renderer, scene)
-    environment.update()
+    environment.render(renderer, scene)
     renderer.render(scene, camera)
     stats.end()
 
