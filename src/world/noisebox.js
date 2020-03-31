@@ -15,11 +15,12 @@ export default class NoiseBox {
     this.distance = 900
     this.resolution = 328 // zoom
     this.density = 20 // grooves per unit distance
-    this.depth = 98 // depth of the grooves
+    this.depth = 100 // depth of the grooves
     this.speed = 0.5
     this.WIDTH = NoiseSizer.getWidth()
     this.HEIGHT = NoiseSizer.getHeight()
-    this.lightIntensity = 0.3
+    this.lightIntensity = 0.8
+    this.lightColorDifference = 1.26
 
     // clock
     const clock = new THREE.Clock()
@@ -53,30 +54,29 @@ export default class NoiseBox {
     plane.position.y = HEIGHT / 2
     plane.scale.set(WIDTH / 2000, HEIGHT / 2000, 1)
 
-    // assign initial positions to verticies
-    for (let i = 0; i < geometry.vertices.length; i += 1) {
-      const vertex = geometry.vertices[i]
-      vertex.xi = vertex.x
-      vertex.yi = vertex.y
-      vertex.zi = vertex.z
-    }
-
     // exports
     this.plane = plane
   }
 
   setupLights = () => {
-    const { WIDTH, HEIGHT, depth, distance, lightIntensity } = this
+    const { WIDTH, HEIGHT, lightIntensity, distance, depth } = this
 
-    // create light
-    const light1 = new THREE.PointLight(0xff0000, lightIntensity)
-    light1.position.set(WIDTH / 4, HEIGHT / 2, distance - depth - 50)
+    // create lights
+    const lights = []
+    const numlights = 3
+    for (let i = 0; i < numlights; i += 1) {
+      lights.push(new THREE.PointLight(0xff0000, lightIntensity))
+    }
 
-    const light2 = new THREE.PointLight(0xff0000, lightIntensity)
-    light2.position.set(-WIDTH / 4, HEIGHT / 2, distance - depth - 50)
+    for (const [i, light] of lights.entries()) {
+      const x = -WIDTH / 2 + WIDTH * (i / (lights.length - 1))
+      const y = -HEIGHT / 2
+      const z = distance - depth - 50
+      light.position.set(x, y, z)
+    }
 
-    // export
-    this.lights = [light1, light2]
+    // exports
+    this.lights = lights
   }
 
   addToScene = scene => {
@@ -97,11 +97,12 @@ export default class NoiseBox {
     const noiseFolder = folder.addFolder("Noise")
     noiseFolder.add(this, "resolution", 100, 1000)
     noiseFolder.add(this, "density", 0, 40, 0.5)
-    noiseFolder.add(this, "depth", 0, 200)
+    noiseFolder.add(this, "depth", 0, 100)
 
     // lights
     const lightsFolder = folder.addFolder("Lights")
-    lightsFolder.add(this, "lightIntensity", 0, 2, 0.1)
+    lightsFolder.add(this, "lightIntensity", 0, 1, 0.1)
+    lightsFolder.add(this, "lightColorDifference", 0.5, 5, 0.01)
   }
 
   render = (renderer, scene) => {
@@ -113,8 +114,8 @@ export default class NoiseBox {
     // update noise
     for (let i = 0; i < plane.geometry.vertices.length; i += 1) {
       const vertex = plane.geometry.vertices[i]
-      const x = (vertex.x + WIDTH / 2) / resolution
-      const y = (vertex.y + HEIGHT / 2) / resolution
+      const x = (vertex.x + 1000) / resolution
+      const y = (vertex.y + 1000) / resolution
       const vNoise = noise.get(x, y) * density
 
       let heightMult = Math.cos(time * speed + vNoise) * 0.5 + 0.5
@@ -127,7 +128,8 @@ export default class NoiseBox {
 
     // update lights
     for (const [i, light] of lights.entries()) {
-      const hue = (time * speed * 0.3 + i * 0.5) % 1
+      const huePos = time * speed * 0.15 * Math.pow(-1, i)
+      const hue = (huePos + (i / lights.length) * this.lightColorDifference) % 1
       const sat = 1
       const value = 1
       const [hu, sa, l] = hsvToHSL(hue, sat, value)
@@ -141,7 +143,7 @@ export default class NoiseBox {
   }
 
   handleResize = () => {
-    const { plane } = this
+    const { plane, lights, distance, depth } = this
 
     const width = NoiseSizer.getWidth()
     const height = NoiseSizer.getHeight()
@@ -150,6 +152,15 @@ export default class NoiseBox {
     plane.scale.set(width / 2000, height / 2000, 1)
     plane.position.y = height / 2
 
+    // update lights
+    for (const [i, light] of lights.entries()) {
+      const x = -width / 2 + width * (i / (lights.length - 1))
+      const y = -height / 2
+      const z = distance - depth - 50
+      light.position.set(x, y, z)
+    }
+
+    // exportss
     this.WIDTH = width
     this.HEIGHT = height
   }
