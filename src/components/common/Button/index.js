@@ -1,8 +1,8 @@
 import React from "react"
-import styled from "styled-components/macro"
+import styled, { css } from "styled-components/macro"
 import { Link } from "react-router-dom"
 
-const Option = styled(Link)`
+const styles = css`
   font-family: roboto-mono, sans-serif;
   font-size: 2rem;
   font-weight: 100;
@@ -14,7 +14,7 @@ const Option = styled(Link)`
   cursor: pointer;
   outline: none !important;
   color: black !important;
-  text-decoration: none;
+  text-decoration: none !important;
   position: relative;
 
   & > div {
@@ -44,12 +44,28 @@ const Option = styled(Link)`
   }
 `
 
+const StyledLink = styled(Link)`
+  ${styles}
+`
+
+const StyledA = styled.a`
+  ${styles}
+`
+
 export default function Button(props) {
-  const { children } = props
+  const { children, type } = props
+
+  if (type === "a") {
+    return (
+      <StyledA {...props}>
+        {children} <div />
+      </StyledA>
+    )
+  }
 
   return (
-    <Option {...props}>
+    <StyledLink {...props}>
       {children} <div />
-    </Option>
+    </StyledLink>
   )
 }

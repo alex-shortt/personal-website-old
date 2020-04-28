@@ -1,5 +1,10 @@
 import React, { useEffect } from "react"
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom"
 import useReactRouter from "use-react-router"
 
 import GlobalStyles from "styles/globalStyles"
@@ -9,6 +14,7 @@ import Display from "components/Display"
 import Environment from "components/Environment"
 
 const Menu = React.lazy(() => import("scenes/Menu"))
+const Websites = React.lazy(() => import("scenes/Websites"))
 
 const GoogleAnalytics = () => {
   const { location } = useReactRouter()
@@ -26,7 +32,9 @@ export default function App() {
           <Environment />
           <Display>
             <Switch>
-              <Route path="/" component={Menu} />
+              <Route path="/" exact component={Menu} />
+              <Route path="/websites" exact component={Websites} />
+              <Redirect to="/" />
               {/* TODO: 404 Page */}
             </Switch>
           </Display>

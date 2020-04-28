@@ -30,12 +30,14 @@ export default function Menu(props) {
     <Container>
       <Title>Alex Shortt</Title>
       <br />
+      <br />
+      <br />
       <Row>
-        <Button as={Link} to="/sites">
-          Sites
+        <Button as={Link} to="/websites">
+          Websites
         </Button>
-        <Button as={Link} to="/projects">
-          Projects
+        <Button as={Link} to="/art">
+          Art
         </Button>
       </Row>
     </Container>

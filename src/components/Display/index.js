@@ -7,11 +7,12 @@ const Container = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translateY(-5%);
+  transform: translate(-50%, -50%) translateY(-5%) translateZ(0px);
   width: 0;
   height: 0;
   z-index: 2;
   opacity: 0.75;
+  overflow-y: auto;
 `
 const mult = 1.29
 
