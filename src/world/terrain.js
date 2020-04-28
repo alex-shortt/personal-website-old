@@ -1,4 +1,3 @@
-import uuid from "uuid/v4"
 import PerlinNoise from "perlin-noise-3d"
 import * as THREE from "three"
 import * as dat from "dat.gui"

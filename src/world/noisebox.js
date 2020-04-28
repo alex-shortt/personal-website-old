@@ -13,7 +13,7 @@ export default class NoiseBox {
 
     // constants
     this.distance = 900
-    this.resolution = 328 // zoom
+    this.resolution = 635 // zoom
     this.density = 20 // grooves per unit distance
     this.depth = 100 // depth of the grooves
     this.speed = 0.5
@@ -50,6 +50,7 @@ export default class NoiseBox {
     // plane
     const plane = new THREE.Mesh(geometry, material)
     plane.rotation.x = Math.PI
+    plane.rotation.z = Math.PI
     plane.position.z = distance
     plane.position.y = HEIGHT / 2
     plane.scale.set(WIDTH / 2000, HEIGHT / 2000, 1)
@@ -92,21 +93,23 @@ export default class NoiseBox {
   addGuiFolder = gui => {
     const folder = gui.addFolder("Noise Box")
     folder.add(this, "speed", 0, 2)
+    folder.open()
 
     // noise
     const noiseFolder = folder.addFolder("Noise")
     noiseFolder.add(this, "resolution", 100, 1000)
     noiseFolder.add(this, "density", 0, 40, 0.5)
     noiseFolder.add(this, "depth", 0, 100)
+    noiseFolder.open()
 
     // lights
     const lightsFolder = folder.addFolder("Lights")
-    lightsFolder.add(this, "lightIntensity", 0, 1, 0.1)
-    lightsFolder.add(this, "lightColorDifference", 0.5, 5, 0.01)
+    lightsFolder.add(this, "lightIntensity", 0, 2, 0.1)
+    lightsFolder.open()
   }
 
   render = (renderer, scene) => {
-    const { plane, noise, WIDTH, HEIGHT, clock, lights } = this
+    const { plane, noise, clock, lights } = this
     const { resolution, density, depth, speed } = this
 
     const time = clock.getElapsedTime()
@@ -118,18 +121,15 @@ export default class NoiseBox {
       const y = (vertex.y + 1000) / resolution
       const vNoise = noise.get(x, y) * density
 
-      let heightMult = Math.cos(time * speed + vNoise) * 0.5 + 0.5
-      if (heightMult > 0.99) {
-        heightMult = 0.99
-      }
+      const heightMult = Math.cos(time * speed + vNoise) * 0.5 + 0.5
 
       vertex.z = heightMult * depth
     }
 
     // update lights
     for (const [i, light] of lights.entries()) {
-      const huePos = time * speed * 0.15 * Math.pow(-1, i)
-      const hue = (huePos + (i / lights.length) * this.lightColorDifference) % 1
+      const huePos = time * speed * 0.15
+      const hue = (huePos + i / lights.length) % 1
       const sat = 1
       const value = 1
       const [hu, sa, l] = hsvToHSL(hue, sat, value)
@@ -138,7 +138,7 @@ export default class NoiseBox {
       light.intensity = this.lightIntensity
     }
 
-    // request plane re-render
+    // re-render resources
     plane.geometry.verticesNeedUpdate = true
   }
 
@@ -160,7 +160,7 @@ export default class NoiseBox {
       light.position.set(x, y, z)
     }
 
-    // exportss
+    // exports
     this.WIDTH = width
     this.HEIGHT = height
   }

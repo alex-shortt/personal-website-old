@@ -73,7 +73,7 @@ export class ThreeWrapper {
     const noisebox = new NoiseBox()
     noisebox.addGuiFolder(gui)
 
-    const environment = new Environment()
+    const environment = new Environment({ inclination: 0.46 })
     environment.addGuiFolder(gui)
 
     environment.addToScene(renderer, scene)

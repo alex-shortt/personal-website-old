@@ -6,7 +6,7 @@ import waterNormalsImg from "assets/textures/waternormals.jpg"
 
 export default class Environment {
   constructor(props = {}) {
-    const { time = 0.48 } = props
+    const { inclination = 0.48, azimuth = 0.4 } = props
 
     // directional light
     const light = new THREE.DirectionalLight(0xffffff, 0.8)
@@ -42,7 +42,8 @@ export default class Environment {
     cubeCamera.renderTarget.texture.minFilter = THREE.LinearMipmapLinearFilter
 
     // exports
-    this.time = time
+    this.inclination = inclination
+    this.azimuth = azimuth
     this.sky = sky
     this.light = light
     this.cubeCamera = cubeCamera
@@ -66,16 +67,18 @@ export default class Environment {
 
   addGuiFolder = gui => {
     const folder = gui.addFolder("Environment")
-    folder.add(this, "time", 0, 1, 0.01).onChange(this.updateSun)
+    folder.add(this, "inclination", 0, 0.5, 0.0001).onChange(this.updateSun)
+    folder.add(this, "azimuth", 0, 1, 0.0001).onChange(this.updateSun)
+    folder.open()
   }
 
   updateSun = () => {
-    const { time, light, sky, water } = this
+    const { inclination, azimuth, light, sky, water } = this
 
     const parameters = {
-      distance: 400,
-      inclination: time,
-      azimuth: 0.205
+      distance: 800,
+      inclination,
+      azimuth
     }
 
     const theta = Math.PI * (parameters.inclination - 0.5)
@@ -98,6 +101,8 @@ export default class Environment {
 
     if (needsCameraUpdate) {
       cubeCamera.update(renderer, sky)
+
+      console.log("update camera")
 
       // eslint-disable-next-line no-param-reassign
       scene.background = cubeCamera.renderTarget
