@@ -1,7 +1,9 @@
-class NoiseSizer {
-  constructor() {
-    this.distance = 900
-    this.fov = 50
+export class NoiseSizer {
+  constructor(props = {}) {
+    const { fov = 50, distance = 900 } = props
+
+    this.distance = distance
+    this.fov = fov
   }
 
   getWidth = () => {

@@ -4,7 +4,7 @@ import * as dat from "dat.gui"
 
 import NoiseBox from "world/noisebox"
 import Environment from "world/environment"
-import NoiseSizer from "services/noisesizer"
+import Sizer from "services/noisesizer"
 
 export class ThreeWrapper {
   threeSetup = containerRef => {
@@ -17,7 +17,7 @@ export class ThreeWrapper {
 
     // camera
     const camera = new THREE.PerspectiveCamera(50, width / height, 2, 2000)
-    camera.position.set(0, NoiseSizer.getCameraHeight(), 0)
+    camera.position.set(0, Sizer.getCameraHeight(), 0)
     camera.lookAt(0, camera.position.y, 1200)
 
     // renderer
@@ -59,7 +59,7 @@ export class ThreeWrapper {
     // camera
     camera.aspect = width / height
     camera.updateProjectionMatrix()
-    camera.position.set(0, NoiseSizer.getCameraHeight(), 0)
+    camera.position.set(0, Sizer.getCameraHeight(), 0)
     camera.lookAt(0, camera.position.y, 1200)
 
     // resize classes

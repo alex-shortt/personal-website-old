@@ -1,11 +1,15 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState, useRef } from "react"
+import styled from "styled-components/macro"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import useReactRouter from "use-react-router"
 
 import GlobalStyles from "styles/globalStyles"
 import FullScreenLoading from "components/FullScreenLoading"
-import ScrollToTop from "components/ScrollToTop"
 import GA from "services/ga"
+import Display from "components/Display"
+import Environment from "components/Environment"
+
+import { ThreeWrapper } from "./services/threeWrapper"
 
 const View = React.lazy(() => import("scenes/View"))
 
@@ -22,12 +26,13 @@ export default function App() {
       <React.Suspense fallback={<FullScreenLoading />}>
         <Router>
           <GoogleAnalytics />
-          <ScrollToTop>
+          <Environment />
+          <Display>
             <Switch>
               <Route path="/" component={View} />
               {/* TODO: 404 Page */}
             </Switch>
-          </ScrollToTop>
+          </Display>
         </Router>
       </React.Suspense>
     </>
