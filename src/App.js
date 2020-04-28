@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useRef } from "react"
-import styled from "styled-components/macro"
+import React, { useEffect } from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import useReactRouter from "use-react-router"
 
@@ -9,9 +8,7 @@ import GA from "services/ga"
 import Display from "components/Display"
 import Environment from "components/Environment"
 
-import { ThreeWrapper } from "./services/threeWrapper"
-
-const View = React.lazy(() => import("scenes/View"))
+const Menu = React.lazy(() => import("scenes/Menu"))
 
 const GoogleAnalytics = () => {
   const { location } = useReactRouter()
@@ -29,7 +26,7 @@ export default function App() {
           <Environment />
           <Display>
             <Switch>
-              <Route path="/" component={View} />
+              <Route path="/" component={Menu} />
               {/* TODO: 404 Page */}
             </Switch>
           </Display>

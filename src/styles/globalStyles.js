@@ -16,4 +16,5 @@ export default createGlobalStyle`
     overflow: auto;
     overflow-x: hidden;
   }
+ 
 `

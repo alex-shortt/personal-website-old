@@ -1,7 +1,7 @@
 import PerlinNoise from "perlin-noise-3d"
 import * as THREE from "three"
 
-import NoiseSizer from "services/noisesizer"
+import Sizer from "services/noisesizer"
 
 export default class NoiseBox {
   constructor(props = {}) {
@@ -15,12 +15,11 @@ export default class NoiseBox {
     this.distance = 900
     this.resolution = 635 // zoom
     this.density = 20 // grooves per unit distance
-    this.depth = 100 // depth of the grooves
+    this.depth = 0 // depth of the grooves
     this.speed = 0.5
-    this.WIDTH = NoiseSizer.getWidth()
-    this.HEIGHT = NoiseSizer.getHeight()
-    this.lightIntensity = 0.8
-    this.lightColorDifference = 1.26
+    this.WIDTH = Sizer.getWidth()
+    this.HEIGHT = Sizer.getHeight()
+    this.lightIntensity = 1.6
 
     // clock
     const clock = new THREE.Clock()
@@ -145,8 +144,8 @@ export default class NoiseBox {
   handleResize = () => {
     const { plane, lights, distance, depth } = this
 
-    const width = NoiseSizer.getWidth()
-    const height = NoiseSizer.getHeight()
+    const width = Sizer.getWidth()
+    const height = Sizer.getHeight()
 
     // update plane
     plane.scale.set(width / 2000, height / 2000, 1)
