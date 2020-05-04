@@ -3,8 +3,11 @@ import styled from "styled-components/macro"
 
 import Helmet from "components/Helmet"
 import Entry from "components/Entry"
-import awgePic from "assets/AWGE-1.png"
-import awgeForumPic from "assets/AWGEFORUMS-1.png"
+import awgePic from "assets/websites/AWGE-1.png"
+import awgeForumPic from "assets/websites/AWGEFORUMS-1.png"
+import antiPic from "assets/websites/ANTI-1.png"
+import sashSmilePic from "assets/websites/SASH-SMILE-1.png"
+import sashFormulaPic from "assets/websites/SASH-FORMULA-1.png"
 
 const Container = styled.div`
   width: 100%;
@@ -32,13 +35,38 @@ export default function Websites(props) {
     image: awgeForumPic
   }
 
+  const antiSite = {
+    id: "anti",
+    title: "ANTI",
+    subtitle: "New York-based Streetwear Brand",
+    link: "https://beta.anti-eshop.com",
+    image: antiPic
+  }
+
+  const sashSmile = {
+    id: "sash-smile",
+    title: "Smile",
+    subtitle: `Site for single "${"Smile"}" from SASH`,
+    link: "http://smile.sashsite.com.s3-website-us-west-1.amazonaws.com/",
+    image: sashSmilePic
+  }
+
+  const sashFormula = {
+    id: "sash-formula",
+    title: "Not A Formula",
+    subtitle: `Site for "${"Not A Formula EP"}" from SASH`,
+    link: "https://www.sashsite.com",
+    image: sashFormulaPic
+  }
+
   return (
     <Container>
       <Helmet title="Websites" />
       <Entry {...awgeSite} />
       <Entry {...awgeForumSite} />
-      <Entry {...awgeSite} />
-      <Entry {...awgeSite} />
+      <Entry {...antiSite} />
+      <Entry {...sashSmile} />
+      <Entry {...sashFormula} />
     </Container>
   )
 }

@@ -28,16 +28,16 @@ const Row = styled.div`
 export default function Menu(props) {
   return (
     <Container>
-      <Title>Alex Shortt</Title>
+      <Title>ALEX SHORTT</Title>
       <br />
       <br />
       <br />
       <Row>
         <Button as={Link} to="/websites">
-          Websites
+          websites
         </Button>
         <Button as={Link} to="/art">
-          Art
+          art
         </Button>
       </Row>
     </Container>
