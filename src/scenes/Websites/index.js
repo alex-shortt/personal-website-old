@@ -8,6 +8,7 @@ import awgeForumPic from "assets/websites/AWGEFORUMS-1.png"
 import antiPic from "assets/websites/ANTI-1.png"
 import sashSmilePic from "assets/websites/SASH-SMILE-1.png"
 import sashFormulaPic from "assets/websites/SASH-FORMULA-1.png"
+import Navbar from "components/Navbar"
 
 const Container = styled.div`
   width: 100%;
@@ -60,13 +61,16 @@ export default function Websites(props) {
   }
 
   return (
-    <Container>
-      <Helmet title="Websites" />
-      <Entry {...awgeSite} />
-      <Entry {...awgeForumSite} />
-      <Entry {...antiSite} />
-      <Entry {...sashSmile} />
-      <Entry {...sashFormula} />
-    </Container>
+    <>
+      <Navbar location="websites" backLink="/" />
+      <Container>
+        <Helmet title="Websites" />
+        <Entry {...awgeSite} />
+        <Entry {...awgeForumSite} />
+        <Entry {...antiSite} />
+        <Entry {...sashSmile} />
+        <Entry {...sashFormula} />
+      </Container>
+    </>
   )
 }
