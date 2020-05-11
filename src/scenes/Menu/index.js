@@ -39,6 +39,9 @@ export default function Menu(props) {
         <Button as={Link} to="/art">
           art
         </Button>
+        <Button as={Link} to="/bio">
+          bio
+        </Button>
       </Row>
     </Container>
   )
