@@ -12,9 +12,10 @@ import FullScreenLoading from "components/FullScreenLoading"
 import GA from "services/ga"
 import Display from "components/Display"
 import Environment from "components/Environment"
-
-const Menu = React.lazy(() => import("scenes/Menu"))
-const Websites = React.lazy(() => import("scenes/Websites"))
+import Websites from "scenes/Websites"
+import Art from "scenes/Art"
+import Bio from "scenes/Bio"
+import Menu from "scenes/Menu"
 
 const GoogleAnalytics = () => {
   const { location } = useReactRouter()
@@ -34,6 +35,8 @@ export default function App() {
             <Switch>
               <Route path="/" exact component={Menu} />
               <Route path="/websites" exact component={Websites} />
+              <Route path="/art" exact component={Art} />
+              <Route path="/bio" exact component={Bio} />
               <Redirect to="/" />
               {/* TODO: 404 Page */}
             </Switch>

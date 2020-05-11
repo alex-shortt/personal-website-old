@@ -12,10 +12,10 @@ import sashFormulaPic from "assets/websites/SASH-FORMULA-1.png"
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  max-width: 800px;
   margin: 0 auto;
-  padding: 30px;
+  padding: 50px;
   box-sizing: border-box;
+  overflow-y: auto;
 `
 
 export default function Websites(props) {
