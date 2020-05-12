@@ -96,13 +96,55 @@ export default class Environment {
     this.needsCameraUpdate = true
   }
 
+  updateToTime = () => {
+    // update sun pos based on time
+    const month = new Date().getMonth()
+    const hours = new Date().getHours()
+    const mins = new Date().getMinutes()
+    const time = (hours + mins / 60).toFixed(2)
+
+    // monthdiff greater during summer
+    const monthDiff = (1 - Math.abs((month - 6) / 6)) * 0.05
+    // darkest
+    const maxIncl = 0.5 - monthDiff
+    // brightest
+    const minIncl = 0.24 - monthDiff
+
+    // sunrise from 6.5 to 8
+    // sunset from 18.5 to 20
+
+    let newInclination
+    if (time <= 6.5) {
+      // early morning
+      newInclination = maxIncl
+    } else if (time > 6.5 && time <= 8) {
+      // sunrise
+      const perc = (time - 6.5) / 1.5
+      newInclination = maxIncl - perc * (maxIncl - minIncl)
+    } else if (time > 8 && time <= 18.5) {
+      // day
+      newInclination = minIncl
+    } else if (time > 18.5 && time < 20) {
+      // sunset
+      const perc = (time - 18.5) / 1.5
+      newInclination = minIncl + perc * (maxIncl - minIncl)
+    } else {
+      // dawn
+      newInclination = maxIncl
+    }
+
+    if (newInclination !== this.inclination) {
+      console.log(`set to ${newInclination}`)
+      this.inclination = newInclination
+      this.updateSun()
+    }
+  }
+
   render = (renderer, scene) => {
     const { water, cubeCamera, sky, needsCameraUpdate = false } = this
 
     if (needsCameraUpdate) {
       cubeCamera.update(renderer, sky)
-
-      console.log("update camera")
 
       // eslint-disable-next-line no-param-reassign
       scene.background = cubeCamera.renderTarget
@@ -111,6 +153,8 @@ export default class Environment {
     }
 
     water.material.uniforms.time.value += 1.0 / 120.0
+
+    this.updateToTime()
   }
 
   handleResize = () => {
