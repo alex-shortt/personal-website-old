@@ -9,6 +9,7 @@ import antiPic from "assets/websites/ANTI-1.png"
 import sashSmilePic from "assets/websites/SASH-SMILE-1.png"
 import sashFormulaPic from "assets/websites/SASH-FORMULA-1.png"
 import Navbar from "components/Navbar"
+import SceneContainer from "components/SceneContainer"
 
 const Container = styled.div`
   width: 100%;
@@ -61,7 +62,7 @@ export default function Websites(props) {
   }
 
   return (
-    <>
+    <SceneContainer>
       <Navbar location="websites" backLink="/" />
       <Container>
         <Helmet title="Websites" />
@@ -71,6 +72,6 @@ export default function Websites(props) {
         <Entry {...sashSmile} />
         <Entry {...sashFormula} />
       </Container>
-    </>
+    </SceneContainer>
   )
 }

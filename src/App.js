@@ -5,8 +5,14 @@ import {
   Switch,
   Redirect
 } from "react-router-dom"
+import styled from "styled-components/macro"
 import useReactRouter from "use-react-router"
+import {
+  TransitionGroup as TransitionGroupBase,
+  CSSTransition
+} from "react-transition-group"
 
+import { fadeTime } from "components/SceneContainer"
 import GlobalStyles from "styles/globalStyles"
 import FullScreenLoading from "components/FullScreenLoading"
 import GA from "services/ga"
@@ -23,6 +29,12 @@ const GoogleAnalytics = () => {
   return <> </>
 }
 
+const TransitionGroup = styled(TransitionGroupBase)`
+  width: 100%;
+  height: 100%;
+  position: relative;
+`
+
 export default function App() {
   return (
     <>
@@ -32,14 +44,26 @@ export default function App() {
           <GoogleAnalytics />
           <Environment />
           <Display>
-            <Switch>
-              <Route path="/" exact component={Menu} />
-              <Route path="/websites" exact component={Websites} />
-              <Route path="/art" exact component={Art} />
-              <Route path="/bio" exact component={Bio} />
-              <Redirect to="/" />
-              {/* TODO: 404 Page */}
-            </Switch>
+            <Route
+              render={({ location }) => (
+                <TransitionGroup style={{ width: "100%", height: "100%" }}>
+                  <CSSTransition
+                    key={location.key}
+                    timeout={fadeTime}
+                    classNames="fade"
+                  >
+                    <Switch location={location}>
+                      <Route path="/" exact component={Menu} />
+                      <Route path="/websites" exact component={Websites} />
+                      <Route path="/art" exact component={Art} />
+                      <Route path="/bio" exact component={Bio} />
+                      <Redirect to="/" />
+                      {/* TODO: 404 Page */}
+                    </Switch>
+                  </CSSTransition>
+                </TransitionGroup>
+              )}
+            />
           </Display>
         </Router>
       </React.Suspense>

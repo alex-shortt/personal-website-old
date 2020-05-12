@@ -3,6 +3,7 @@ import styled from "styled-components/macro"
 import { Link } from "react-router-dom"
 
 import { Button } from "components/common"
+import SceneContainer from "components/SceneContainer"
 
 const Container = styled.div`
   width: 100%;
@@ -27,22 +28,24 @@ const Row = styled.div`
 
 export default function Menu(props) {
   return (
-    <Container>
-      <Title>ALEX SHORTT</Title>
-      <br />
-      <br />
-      <br />
-      <Row>
-        <Button as={Link} to="/websites">
-          websites
-        </Button>
-        <Button as={Link} to="/art">
-          art
-        </Button>
-        <Button as={Link} to="/bio">
-          bio
-        </Button>
-      </Row>
-    </Container>
+    <SceneContainer>
+      <Container>
+        <Title>ALEX SHORTT</Title>
+        <br />
+        <br />
+        <br />
+        <Row>
+          <Button as={Link} to="/websites">
+            websites
+          </Button>
+          <Button as={Link} to="/art">
+            art
+          </Button>
+          <Button as={Link} to="/bio">
+            bio
+          </Button>
+        </Row>
+      </Container>
+    </SceneContainer>
   )
 }
