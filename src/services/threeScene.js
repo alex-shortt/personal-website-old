@@ -6,7 +6,7 @@ import NoiseBox from "world/noisebox"
 import Environment from "world/environment"
 import Sizer from "services/noisesizer"
 
-export class ThreeWrapper {
+export class ThreeScene {
   threeSetup = containerRef => {
     // get container dimensions and use them for scene sizing
     const { clientWidth: width, clientHeight: height } = containerRef

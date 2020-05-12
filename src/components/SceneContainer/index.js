@@ -1,8 +1,7 @@
 import React from "react"
 import styled from "styled-components/macro"
 
-export const fadeTime = 500
-export const delay = 2000
+import { FADE_TIME, DELAY } from "components/PageTransition"
 
 export default styled.div`
   width: 100%;
@@ -13,13 +12,13 @@ export default styled.div`
   &.fade-enter {
     opacity: 0;
     z-index: 1;
-    transition-delay: ${delay + fadeTime}ms;
+    transition-delay: ${DELAY + FADE_TIME}ms;
   }
 
   &.fade-appear-active,
   &.fade-enter.fade-enter-active {
     opacity: 1;
-    transition: opacity ${fadeTime}ms ease-out ${delay + fadeTime}ms;
+    transition: opacity ${FADE_TIME}ms ease-in ${DELAY + FADE_TIME}ms;
   }
 
   &.fade-exit {
@@ -28,6 +27,6 @@ export default styled.div`
 
   &.fade-exit.fade-exit-active {
     opacity: 0;
-    transition: opacity ${fadeTime}ms ease-out;
+    transition: opacity ${FADE_TIME}ms ease-out;
   }
 `

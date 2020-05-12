@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, useContext } from "react"
 import styled from "styled-components/macro"
 
-import { ThreeWrapper } from "services/threeWrapper"
+import { ThreeScene } from "services/threeScene"
+import { EnvironmentContext } from "services/environment"
 
 const Container = styled.div`
   position: absolute;
@@ -13,19 +14,23 @@ const Container = styled.div`
 `
 
 export default function Environment(props) {
-  const [setup, setSetup] = useState("false")
+  const { setScene } = useContext(EnvironmentContext)
+
+  const [setup, setSetup] = useState(false)
 
   const containerRef = useRef()
-  const threeWrapper = new ThreeWrapper()
 
   useEffect(() => {
-    if (setup === "false") {
-      threeWrapper.threeSetup(containerRef.current)
-      threeWrapper.sceneSetup()
-      threeWrapper.startAnimationLoop()
-      setSetup("true")
+    if (setup === false) {
+      const scene = new ThreeScene()
+      scene.threeSetup(containerRef.current)
+      scene.sceneSetup()
+      scene.startAnimationLoop()
+
+      setScene(scene)
+      setSetup(true)
     }
-  }, [setup, threeWrapper])
+  }, [setScene, setup])
 
   return <Container ref={containerRef} />
 }

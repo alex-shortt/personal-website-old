@@ -7,12 +7,8 @@ import {
 } from "react-router-dom"
 import styled from "styled-components/macro"
 import useReactRouter from "use-react-router"
-import {
-  TransitionGroup as TransitionGroupBase,
-  CSSTransition
-} from "react-transition-group"
 
-import { fadeTime, delay } from "components/SceneContainer"
+import { EnvironmentProvider } from "services/environment"
 import GlobalStyles from "styles/globalStyles"
 import FullScreenLoading from "components/FullScreenLoading"
 import GA from "services/ga"
@@ -23,17 +19,13 @@ import Art from "scenes/Art"
 import Bio from "scenes/Bio"
 import Menu from "scenes/Menu"
 
+import PageTransition from "./components/PageTransition"
+
 const GoogleAnalytics = () => {
   const { location } = useReactRouter()
   useEffect(() => GA.pageview(location.pathname), [location])
   return <> </>
 }
-
-const TransitionGroup = styled(TransitionGroupBase)`
-  width: 100%;
-  height: 100%;
-  position: relative;
-`
 
 export default function App() {
   return (
@@ -42,29 +34,23 @@ export default function App() {
       <React.Suspense fallback={<FullScreenLoading />}>
         <Router>
           <GoogleAnalytics />
-          <Environment />
-          <Display>
-            <Route
-              render={({ location }) => (
-                <TransitionGroup style={{ width: "100%", height: "100%" }}>
-                  <CSSTransition
-                    key={location.key}
-                    timeout={fadeTime * 2 + delay}
-                    classNames="fade"
-                  >
-                    <Switch location={location}>
-                      <Route path="/" exact component={Menu} />
-                      <Route path="/websites" exact component={Websites} />
-                      <Route path="/art" exact component={Art} />
-                      <Route path="/bio" exact component={Bio} />
-                      <Redirect to="/" />
-                      {/* TODO: 404 Page */}
-                    </Switch>
-                  </CSSTransition>
-                </TransitionGroup>
-              )}
-            />
-          </Display>
+          <EnvironmentProvider>
+            <Environment />
+            <Display>
+              <PageTransition
+                render={location => (
+                  <Switch location={location}>
+                    <Route path="/" exact component={Menu} />
+                    <Route path="/websites" exact component={Websites} />
+                    <Route path="/art" exact component={Art} />
+                    <Route path="/bio" exact component={Bio} />
+                    <Redirect to="/" />
+                    {/* TODO: 404 Page */}
+                  </Switch>
+                )}
+              />
+            </Display>
+          </EnvironmentProvider>
         </Router>
       </React.Suspense>
     </>
