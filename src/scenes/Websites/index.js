@@ -9,11 +9,16 @@ import antiPic from "assets/websites/ANTI-1.png"
 import sashSmilePic from "assets/websites/SASH-SMILE-1.png"
 import sashFormulaPic from "assets/websites/SASH-FORMULA-1.png"
 import Navbar from "components/Navbar"
-import SceneContainer from "components/SceneContainer"
+import SceneContainerBase from "components/SceneContainer"
 
-const Container = styled.div`
+const SceneContainer = styled(SceneContainerBase)`
+  display: flex;
+  flex-direction: column;
+`
+
+const Content = styled.div`
   width: 100%;
-  height: 100%;
+  flex: 1;
   margin: 0 auto;
   padding: 50px;
   box-sizing: border-box;
@@ -64,14 +69,14 @@ export default function Websites(props) {
   return (
     <SceneContainer>
       <Navbar location="websites" backLink="/" />
-      <Container>
+      <Content>
         <Helmet title="Websites" />
         <Entry {...awgeSite} />
         <Entry {...awgeForumSite} />
         <Entry {...antiSite} />
         <Entry {...sashSmile} />
         <Entry {...sashFormula} />
-      </Container>
+      </Content>
     </SceneContainer>
   )
 }
