@@ -12,7 +12,7 @@ import {
   CSSTransition
 } from "react-transition-group"
 
-import { fadeTime } from "components/SceneContainer"
+import { fadeTime, delay } from "components/SceneContainer"
 import GlobalStyles from "styles/globalStyles"
 import FullScreenLoading from "components/FullScreenLoading"
 import GA from "services/ga"
@@ -49,7 +49,7 @@ export default function App() {
                 <TransitionGroup style={{ width: "100%", height: "100%" }}>
                   <CSSTransition
                     key={location.key}
-                    timeout={fadeTime}
+                    timeout={fadeTime * 2 + delay}
                     classNames="fade"
                   >
                     <Switch location={location}>
