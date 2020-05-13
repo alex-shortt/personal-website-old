@@ -14,7 +14,7 @@ const Container = styled.div`
   opacity: 0.75;
   overflow-y: auto;
 `
-const mult = 1.29
+const mult = 1.286
 
 const getWidth = () => (Sizer.getWidth() * mult * window.innerHeight) / 1080
 const getHeight = () => (Sizer.getHeight() * mult * window.innerHeight) / 1080
