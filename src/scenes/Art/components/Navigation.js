@@ -18,7 +18,7 @@ const Indicator = styled.h2`
   font-weight: 200;
   font-size: 2rem;
   margin: 0 10px;
-  color: white;
+  color: black;
   width: 40px;
   text-align: center;
   user-select: none;

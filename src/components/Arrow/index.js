@@ -8,7 +8,7 @@ const SVG = styled.svg`
   width: ${props => 70 * props.ratio * props.scale}px;
 
   &:hover > * {
-    stroke-width: 4;
+    stroke-width: 5;
   }
 `
 
@@ -17,9 +17,9 @@ const Line = styled.polyline`
 `
 
 export default function Arrow(props) {
-  const { dir, scale = 0.7, ratio = 0.428, ...restProps } = props
+  const { dir, scale = 0.6, ratio = 0.42, ...restProps } = props
 
-  // scale :: 1 = 70x30
+  // scale :: 1 <==> w = 70
   // ratio :: w / h, ^ = wider, v = taller
 
   const points = dir === "left" ? "95,95 5,50 95,5" : "5,5 95,50 5,95"
@@ -34,8 +34,8 @@ export default function Arrow(props) {
     >
       <Line
         fill="none"
-        stroke="#f2f2f2"
-        strokeWidth="2"
+        stroke="black"
+        strokeWidth="3"
         strokeLinecap="square"
         strokeLinejoin="miter"
         points={points}
