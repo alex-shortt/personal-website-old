@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 
 import { Button } from "components/common"
 import SceneContainer from "components/SceneContainer"
+import Helmet from "components/Helmet"
 
 const Container = styled.div`
   width: 100%;
@@ -29,6 +30,7 @@ const Row = styled.div`
 export default function Menu(props) {
   return (
     <SceneContainer>
+      <Helmet title="" />
       <Container>
         <Title>ALEX SHORTT</Title>
         <br />
