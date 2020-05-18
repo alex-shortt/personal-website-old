@@ -16,7 +16,7 @@ import Display from "components/Display"
 import Environment from "components/Environment"
 import Websites from "scenes/Websites"
 import Art from "scenes/Art"
-import Bio from "scenes/Bio"
+import About from "scenes/About"
 import Menu from "scenes/Menu"
 
 import PageTransition from "./components/PageTransition"
@@ -43,7 +43,7 @@ export default function App() {
                     <Route path="/" exact component={Menu} />
                     <Route path="/websites" exact component={Websites} />
                     <Route path="/art" exact component={Art} />
-                    <Route path="/bio" exact component={Bio} />
+                    <Route path="/about" exact component={About} />
                     <Redirect to="/" />
                     {/* TODO: 404 Page */}
                   </Switch>

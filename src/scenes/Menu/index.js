@@ -41,8 +41,8 @@ export default function Menu(props) {
           <Button as={Link} to="/art">
             art
           </Button>
-          <Button as={Link} to="/bio">
-            bio
+          <Button as={Link} to="/about">
+            about
           </Button>
         </Row>
       </Container>
