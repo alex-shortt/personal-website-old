@@ -23,6 +23,18 @@ const Text = styled.p`
   line-height: 1.45em;
 `
 
+const AwgeLink = () => (
+  <a href="https://awge.com" target="_blank" rel="noopener noreferrer">
+    awge.com
+  </a>
+)
+
+const MetaplugLink = () => (
+  <a href="https://www.metaplug.io" target="_blank" rel="noopener noreferrer">
+    Metaplug
+  </a>
+)
+
 export default function TextContainer(props) {
   const { setScrollPerc, ...restProps } = props
 
@@ -45,26 +57,35 @@ export default function TextContainer(props) {
     <Container {...restProps} ref={scrollContainer}>
       <Title>Bio</Title>
       <Text>
-        Since I was 16, I've spent my time finding the intersection between art,
-        technology, and business. I started making websites
+        Between the robotics team and hackathons, I grew up living and breathing
+        code. In highschool I somehow got the job to make the website for A$AP
+        Rocky, <AwgeLink />, which opened me up to the creative side of
+        programming. I kept this with me as I went to UC Santa Barbara to study
+        Computer Science, where I found Media Arts classes to help me formalize
+        my artistic interests. Alongside this, I am working on my company{" "}
+        <MetaplugLink />. Both school and the company are ways for me to grow as
+        a person which pushes my art further than I could have ever imagined. My
+        current art mainly deals with GANs.
       </Text>
       <br />
       <br />
       <Title>Statement</Title>
       <Text>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-        accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
-        illo inventore veritatis et quasi architecto beatae vitae dicta sunt
-        explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
-        odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-        voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum
-        quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam
-        eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat
-        voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam
-        corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?
-        Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse
-        quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo
-        voluptas nulla pariatur?
+        I see reality as one massive vector space: some finite number of
+        dimensions with a vector in the space corresponding to an idea.
+        Generative Adversarial Networks (GANs) are a computer's implementation
+        of this concept, at least within the image domain. I believe that
+        researching this framework will lead to <b>1.</b> a clearer
+        understanding of our own reality and its meaning and <b>2.</b> a means
+        to <i>create</i> a new reality to continue the infinite regress of
+        deities.
+        <br />
+        <br />
+        My work aims to abstract this definition of reality to encompass both
+        humans and computers and present it in a way that most effectively
+        communicates the idea. Each piece I create highlights one consequence of
+        this framework, primarily focusing on the most important aspects of our
+        shared human experience: information, connection, and creation.
       </Text>
     </Container>
   )
