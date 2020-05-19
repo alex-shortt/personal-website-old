@@ -78,7 +78,7 @@ export default function TextContainer(props) {
         researching this framework will lead to <b>1.</b> a clearer
         understanding of our own reality and its meaning and <b>2.</b> a means
         to <i>create</i> a new reality to continue the infinite regress of
-        deities.
+        creation.
         <br />
         <br />
         My work aims to abstract this definition of reality to encompass both
