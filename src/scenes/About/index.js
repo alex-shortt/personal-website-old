@@ -6,6 +6,7 @@ import SceneContainerBase from "components/SceneContainer"
 import Navbar from "components/Navbar"
 
 import TextContainerBase from "./components/TextContainer"
+import ImageContainerBase from "./components/ImageContainer"
 
 const SceneContainer = styled(SceneContainerBase)`
   display: flex;
@@ -22,11 +23,8 @@ const Content = styled.div`
   overflow-y: auto;
 `
 
-const ImageContainer = styled.div`
+const ImageContainer = styled(ImageContainerBase)`
   flex: 0.8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `
 
 const Spacer = styled.div`
@@ -45,7 +43,7 @@ export default function About(props) {
       <Helmet title="About" />
       <Navbar location="about" backLink="/" />
       <Content>
-        <ImageContainer>{scrollPerc.toFixed(4) * 100}%</ImageContainer>
+        <ImageContainer scrollPerc={scrollPerc} />
         <Spacer />
         <TextContainer setScrollPerc={setScrollPerc} />
       </Content>
