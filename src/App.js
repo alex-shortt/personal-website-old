@@ -20,6 +20,7 @@ import About from "scenes/About"
 import Menu from "scenes/Menu"
 
 import PageTransition from "./components/PageTransition"
+import ReadMore from "./scenes/ReadMore/ReadMore"
 
 const GoogleAnalytics = () => {
   const { location } = useReactRouter()
@@ -44,6 +45,8 @@ export default function App() {
                     <Route path="/websites" exact component={Websites} />
                     <Route path="/art" exact component={Art} />
                     <Route path="/about" exact component={About} />
+                    <Route path="/websites/:id" exact component={ReadMore} />
+                    <Route path="/art/:id" exact component={ReadMore} />
                     <Redirect to="/" />
                     {/* TODO: 404 Page */}
                   </Switch>
