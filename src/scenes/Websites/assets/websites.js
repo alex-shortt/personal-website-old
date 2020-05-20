@@ -38,4 +38,19 @@ const sashFormula = {
   image: "https://assets.mediated.world/site/sash-formula/formula-main.png"
 }
 
-export default [awgeSite, antiSite, awgeForumSite, sashSmile, sashFormula]
+const jermaineSite = {
+  id: "jermaine",
+  title: "Jermaine Fowler",
+  subtitle: "Actor and Stand Up Comedian",
+  link: "http://jermaine-fowler-site.s3-website-us-west-1.amazonaws.com/",
+  image: "https://assets.mediated.world/site/jermaine/jermaine-main.png"
+}
+
+export default [
+  awgeSite,
+  antiSite,
+  awgeForumSite,
+  sashSmile,
+  sashFormula,
+  jermaineSite
+]
