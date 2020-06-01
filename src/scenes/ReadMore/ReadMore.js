@@ -8,6 +8,7 @@ import Helmet from "components/Helmet"
 import Navbar from "components/Navbar"
 
 import Awge from "./scenes/Awge"
+import LatentExplorer from "./scenes/LatentExplorer"
 
 const SceneContainer = styled(SceneContainerBase)`
   display: flex;
@@ -37,7 +38,7 @@ export default function ReadMore(props) {
       <Navbar location={`${type} - ${idLowerWords}`} backLink={`/${type}`} />
       <Content>
         <Switch location={location}>
-          <Route path="/websites/awge" exact component={Awge} />
+          <Route path="/art/latent-explorer" exact component={LatentExplorer} />
           <Route path="/" exact component={Menu} />
         </Switch>
       </Content>
