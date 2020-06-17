@@ -23,6 +23,7 @@ const Container = styled.div`
     & > div {
       margin-left: 0 !important;
       margin-right: 20px;
+      text-align: right;
     }
   }
 `

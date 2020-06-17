@@ -23,6 +23,11 @@ const Text = styled.p`
   line-height: 1.45em;
 `
 
+const CenteredText = styled.div`
+  width: 100%;
+  text-align: center;
+`
+
 const AwgeLink = () => (
   <a href="https://awge.com" target="_blank" rel="noopener noreferrer">
     awge.com
@@ -75,17 +80,26 @@ export default function TextContainer(props) {
         dimensions with a vector in the space corresponding to an idea.
         Generative Adversarial Networks (GANs) are a computer's implementation
         of this concept, at least within the image domain. I believe that
-        researching this framework will lead to <b>1.</b> a clearer
-        understanding of our own reality and its meaning and <b>2.</b> a means
-        to <i>create</i> a new reality to continue the infinite regress of
-        creation.
+        researching this framework will lead to ( 1 ) a clearer understanding of
+        our own reality and its meaning and ( 2 ) a means to <i>create</i> a new
+        reality to continue the infinite regress of creation.
         <br />
         <br />
         My work aims to abstract this definition of reality to encompass both
         humans and computers and present it in a way that most effectively
         communicates the idea. Each piece I create highlights one consequence of
         this framework, primarily focusing on the most important aspects of our
-        shared human experience: information, connection, and creation.
+        shared human experience:
+        <CenteredText>
+          <br />
+          Information
+          <br />
+          Connection
+          <br />
+          Creation
+          <br />
+          Scale
+        </CenteredText>
       </Text>
     </Container>
   )
