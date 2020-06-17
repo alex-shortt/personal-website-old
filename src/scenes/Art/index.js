@@ -4,6 +4,7 @@ import styled from "styled-components/macro"
 import Helmet from "components/Helmet"
 import SceneContainerBase from "components/SceneContainer"
 import Navbar from "components/Navbar"
+import PreloadImages from "components/PreloadImages"
 
 import Navigation from "./components/Navigation"
 import PieceDisplay from "./components/PieceDisplay"
@@ -31,6 +32,7 @@ export default function Art(props) {
       <Navbar location="art" backLink="/" />
       <PieceDisplay piece={pieces[pos]} />
       <Navigation pos={pos} num={pieces.length} prev={prevPos} next={nextPos} />
+      <PreloadImages images={pieces.map(piece => piece.heroImage)} />
     </SceneContainer>
   )
 }
