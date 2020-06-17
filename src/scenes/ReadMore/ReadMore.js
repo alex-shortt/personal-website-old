@@ -7,8 +7,9 @@ import Menu from "scenes/Menu"
 import Helmet from "components/Helmet"
 import Navbar from "components/Navbar"
 
-import Awge from "./scenes/Awge"
 import LatentExplorer from "./scenes/LatentExplorer"
+import MediatedWorld from "./scenes/MediatedWorld"
+import Foundation from "./scenes/Foundation"
 
 const SceneContainer = styled(SceneContainerBase)`
   display: flex;
@@ -39,6 +40,8 @@ export default function ReadMore(props) {
       <Content>
         <Switch location={location}>
           <Route path="/art/latent-explorer" exact component={LatentExplorer} />
+          <Route path="/art/foundation" exact component={Foundation} />
+          <Route path="/art/mediated-world" exact component={MediatedWorld} />
           <Route path="/" exact component={Menu} />
         </Switch>
       </Content>

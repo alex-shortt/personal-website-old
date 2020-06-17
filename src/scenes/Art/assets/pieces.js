@@ -1,7 +1,7 @@
 const showcase = {
-  id: "mediated-showcase",
-  title: "mediated.world Showcase",
-  subtitle: "2019, Event",
+  id: "mediated-world",
+  title: "mediated.world",
+  subtitle: "2019, Showcase",
   abstract:
     "An abstraction of our world to bring focus to information and its movement. Showcase featured 1 digital piece and 3 installations.",
   heroImage: "https://assets.mediated.world/site/showcase/main.png"

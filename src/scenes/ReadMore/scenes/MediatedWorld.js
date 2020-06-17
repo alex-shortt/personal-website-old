@@ -11,9 +11,9 @@ const Text = styled.p`
   line-height: 1.45em;
 `
 
-export default function LatentExplorer(props) {
+export default function MediatedWorld(props) {
   return (
-    <ArtReadMore id="latent-explorer">
+    <ArtReadMore id="mediated-world">
       <Text>
         This piece showcases a direct connection between humans and computers by
         connecting ranges of expression in each. For the human range of
