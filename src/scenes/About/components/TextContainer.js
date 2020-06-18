@@ -90,17 +90,17 @@ export default function TextContainer(props) {
         communicates the idea. Each piece I create highlights one consequence of
         this framework, primarily focusing on the most important aspects of our
         shared human experience:
-        <CenteredText>
-          <br />
-          Information
-          <br />
-          Connection
-          <br />
-          Creation
-          <br />
-          Scale
-        </CenteredText>
       </Text>
+      <CenteredText>
+        <br />
+        Information
+        <br />
+        Connection
+        <br />
+        Creation
+        <br />
+        Scale
+      </CenteredText>
     </Container>
   )
 }

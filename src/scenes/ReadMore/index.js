@@ -7,6 +7,8 @@ import Menu from "scenes/Menu"
 import Helmet from "components/Helmet"
 import Navbar from "components/Navbar"
 
+import pieces from "../Art/assets/pieces"
+
 import LatentExplorer from "./scenes/LatentExplorer"
 import MediatedWorld from "./scenes/MediatedWorld"
 import Foundation from "./scenes/Foundation"
@@ -18,25 +20,24 @@ const SceneContainer = styled(SceneContainerBase)`
 
 const Content = styled.div`
   padding: 25px;
+  flex: 1;
+  overflow-y: auto;
 `
 
 export default function ReadMore(props) {
   const {
     match: {
-      params: { id },
-      url
+      params: { id }
     },
     location
   } = props
 
-  const type = url.split("/")[1]
-  const idLowerWords = id.replace("-", " ")
-  const idWords = capitalizeWords(idLowerWords)
+  const piece = pieces.find(pic => pic.id === id)
 
   return (
     <SceneContainer>
-      <Helmet title={idWords} />
-      <Navbar location={`${type} - ${idLowerWords}`} backLink={`/${type}`} />
+      <Helmet title={piece.title} />
+      <Navbar location={`art - ${piece.title.toLowerCase()}`} backLink="/art" />
       <Content>
         <Switch location={location}>
           <Route path="/art/latent-explorer" exact component={LatentExplorer} />
@@ -47,10 +48,4 @@ export default function ReadMore(props) {
       </Content>
     </SceneContainer>
   )
-}
-
-function capitalizeWords(str) {
-  return str.replace(/\w\S*/g, function(txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-  })
 }

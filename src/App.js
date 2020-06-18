@@ -20,7 +20,7 @@ import About from "scenes/About"
 import Menu from "scenes/Menu"
 
 import PageTransition from "./components/PageTransition"
-import ReadMore from "./scenes/ReadMore/ReadMore"
+import ReadMore from "./scenes/ReadMore"
 
 const GoogleAnalytics = () => {
   const { location } = useReactRouter()

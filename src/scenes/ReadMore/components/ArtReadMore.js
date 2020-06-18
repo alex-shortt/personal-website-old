@@ -5,7 +5,6 @@ import pieces from "scenes/Art/assets/pieces"
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
   margin: 0 auto;
   max-width: 650px;
 `
