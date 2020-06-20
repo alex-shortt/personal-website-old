@@ -15,15 +15,15 @@ export default function Foundation(props) {
   return (
     <ArtReadMore id="foundation" dark>
       <Text>
-        This piece showcases a direct connection between humans and computers by
-        connecting ranges of expression in each. For the human range of
-        expression I picked their position as movement comes naturally to us.
-        For the computer I trained a GAN on images of a mountain. With tight
-        constraints on both the human and computer, everyone that interacted
-        with the piece found their own way of expressing themselves: some
-        danced, some walked around. They slowly began to learn the mapping of
-        expression and were eventually able to control the flow of ideas to
-        craft their own story.
+        This piece stood out from my show as the most simple artifact from{" "}
+        <i>mediated.world</i>. It depicts a direct connection of information
+        from music to light, with three light strips existing as three frequency
+        ranges of the playing audio. The three strips rotate through triadic
+        colors relative to each other as, relative to the piece, the combined
+        frequency ranges make up the sample space. The brightness of each strip
+        is mapped to the volume of the frequency range as this signifies the
+        intensity of the same output. I introduced this piece at the
+        mediated.world Showcase and eventually installed it in more places.
       </Text>
     </ArtReadMore>
   )
