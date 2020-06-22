@@ -103,10 +103,12 @@ export class ThreeScene {
     environment.addGuiFolder(gui)
 
     this.offsetPos = 10
-    this.offsetRot = 0.001
+    this.offsetRotY = 2
+    this.offsetRotX = 4
     const folder = gui.addFolder("Parallax")
     folder.add(this, "offsetPos", 0, 50, 1)
-    folder.add(this, "offsetRot", 0, 0.02, 0.001)
+    folder.add(this, "offsetRotY", -4, 4, 1)
+    folder.add(this, "offsetRotX", 0, 8, 1)
     folder.open()
 
     environment.addToScene(renderer, scene)
@@ -135,11 +137,22 @@ export class ThreeScene {
 
     stats.begin()
     if (this.displayRef) {
+      const cameraRotX =
+        camera.rotation.x > 0
+          ? camera.rotation.x - Math.PI
+          : camera.rotation.x + Math.PI
+
       const posX = (offset.x - 0.5) * this.offsetPos
       const posY = (offset.y - 0.5) * this.offsetPos
-      const rotX = (offset.y - 0.5) * this.offsetRot
-      const rotY = (offset.x - 0.5) * this.offsetRot
-      this.displayRef.style.transform = `rotateX(${rotX}rad) rotateY(${rotY}rad) translate(${posX}px, ${posY}px)`
+      const rotX = -cameraRotX * this.offsetRotX
+      const rotY = -camera.rotation.y * this.offsetRotY
+      const scale =
+        1 +
+        Math.sqrt(Math.pow(offset.x - 0.5, 2) + Math.pow(offset.y - 0.5, 2)) *
+          0.015
+
+      console.log(rotX.toFixed(3), rotY.toFixed(3), scale.toFixed(3))
+      this.displayRef.style.transform = `translate(${posX}px, ${posY}px) rotateX(${rotX}rad) rotateY(${rotY}rad) `
     }
     noisebox.render(renderer, scene)
     environment.render(renderer, scene)
