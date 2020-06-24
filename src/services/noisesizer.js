@@ -7,6 +7,21 @@ export class NoiseSizer {
   }
 
   getWidth = () => {
+    if (window.innerWidth < 500) {
+      return window.innerWidth
+    }
+
+    if (window.innerWidth < 750) {
+      return Math.min(
+        window.innerWidth * 0.91,
+        this.getHeight() * (1000 / window.innerHeight)
+      )
+    }
+
+    if (window.innerWidth < 1000) {
+      return this.getHeight() * (1000 / window.innerHeight)
+    }
+
     return this.getHeight() * (window.innerWidth / window.innerHeight)
   }
 
@@ -14,7 +29,7 @@ export class NoiseSizer {
     const vFOV = (this.fov * Math.PI) / 180
     const fullHeight = 2 * Math.tan(vFOV / 2) * Math.abs(this.distance)
 
-    return Math.min(480, fullHeight * 0.9)
+    return Math.min(540, fullHeight)
   }
 
   getCameraHeight = () => {
