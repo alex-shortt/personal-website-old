@@ -17,9 +17,47 @@ const Container = styled.div`
 const RotateContainer = styled.div`
   width: 100%;
   height: 100%;
+  position: relative;
   //border: 2px solid red;
   //box-sizing: border-box;
 `
+
+const Indicator = styled.div`
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%. -50%);
+  z-index: 5;
+  background: red;
+`
+
+const Indicator2 = styled(Indicator)`
+  top: 0;
+  left: 0;
+  transform: none;
+`
+const Indicator3 = styled(Indicator)`
+  top: 0;
+  left: unset;
+  right: 0;
+  transform: none;
+`
+const Indicator4 = styled(Indicator)`
+  top: unset;
+  left: unset;
+  bottom: 0;
+  right: 0;
+  transform: none;
+`
+const Indicator5 = styled(Indicator)`
+  top: unset;
+  left: 0;
+  bottom: 0;
+  transform: none;
+`
+
 const mult = 1.286
 
 const getWidth = () => (Sizer.getWidth() * mult * window.innerHeight) / 1080

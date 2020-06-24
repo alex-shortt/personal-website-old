@@ -8,7 +8,6 @@ const Container = styled.div`
   position: relative;
   padding: 5px 15px;
   box-sizing: border-box;
-  box-shadow: -1px 0px 12px rgba(204, 204, 204, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,9 +19,6 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     transition: all 0.15s ease-in;
-    background: rgba(255, 255, 255, 0.05);
-    filter: blur(3px);
-    z-index: -1;
   }
 `
 
@@ -49,7 +45,6 @@ export default function Navbar(props) {
       <Location>{location}</Location>
       <Location>//</Location>
       <BackLink to={backLink}>back</BackLink>
-      <div />
     </Container>
   )
 }
