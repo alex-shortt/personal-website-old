@@ -127,31 +127,31 @@ export class ThreeScene {
       camera,
       environment,
       stats,
-      offset = {}
+      offset
     } = this
 
-    camera.position.x = 50 * (offset.x - 0.5)
-    camera.position.y = Sizer.getCameraHeight() + 50 * (offset.y - 0.5)
-    camera.lookAt(0, Sizer.getCameraHeight(), 1200)
-    // camera.rotation.z = Math.PI * 2
-
     stats.begin()
-    if (this.displayRef) {
+    if (this.displayRef && offset) {
+      camera.position.x = 50 * (offset.x - 0.5)
+      camera.position.y = Sizer.getCameraHeight() + 50 * (offset.y - 0.5)
+      camera.lookAt(0, Sizer.getCameraHeight(), 1200)
+      // camera.rotation.z = Math.PI * 2
+
       const cameraRotX =
         camera.rotation.x > 0
           ? camera.rotation.x - Math.PI
           : camera.rotation.x + Math.PI
 
-      const posX = (offset.x - 0.5) * this.offsetPos
-      const posY = (offset.y - 0.5) * this.offsetPos
-      const rotX = -cameraRotX * this.offsetRotX
-      const rotY = -camera.rotation.y * this.offsetRotY
+      const posX = (offset.x - 0.5) * this.offsetPos || 0
+      const posY = (offset.y - 0.5) * this.offsetPos || 0
+      const rotX = -cameraRotX * this.offsetRotX || 0
+      const rotY = -camera.rotation.y * this.offsetRotY || 0
       const scale =
         1 +
         Math.sqrt(Math.pow(offset.x - 0.5, 2) + Math.pow(offset.y - 0.5, 2)) *
           0.015
 
-      console.log(rotX.toFixed(3), rotY.toFixed(3), scale.toFixed(3))
+      // console.log(rotX.toFixed(3), rotY.toFixed(3), scale.toFixed(3))
       this.displayRef.style.transform = `translate(${posX}px, ${posY}px) rotateX(${rotX}rad) rotateY(${rotY}rad) `
     }
     noisebox.render(renderer, scene)
