@@ -46,11 +46,29 @@ const jermaineSite = {
   image: "https://assets.mediated.world/site/jermaine/jermaine-main.png"
 }
 
+const pitsSite = {
+  id: "pits",
+  title: "Puzzle In The Sky",
+  subtitle: "LA-Based Streetwear Brand from Zack Bia",
+  link: "https://puzzleinthesky.com",
+  image: "https://assets.mediated.world/site/pits/pits-main.png"
+}
+
+const personalSite = {
+  id: "personal",
+  title: "Personal Site",
+  subtitle: "My first personal site, still like it",
+  link: "http://first-personal-site.s3-website-us-west-1.amazonaws.com/",
+  image: "https://assets.mediated.world/site/personal/personal-main.png"
+}
+
 export default [
   awgeSite,
+  pitsSite,
   antiSite,
   awgeForumSite,
+  jermaineSite,
   sashSmile,
   sashFormula,
-  jermaineSite
+  personalSite
 ]
