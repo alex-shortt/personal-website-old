@@ -19,7 +19,7 @@ export default class NoiseBox {
     this.speed = 0.5
     this.WIDTH = Sizer.getWidth()
     this.HEIGHT = Sizer.getHeight()
-    this.lightIntensity = 0.2
+    this.lightIntensity = 0.5
 
     // clock
     const clock = new THREE.Clock()
@@ -127,6 +127,7 @@ export default class NoiseBox {
 
     // update lights
     for (const [i, light] of lights.entries()) {
+      const perc = i / (lights.length - 1)
       const huePos = time * speed * 0.15
       const hue = (huePos + i / lights.length) % 1
       const sat = 1
@@ -135,6 +136,7 @@ export default class NoiseBox {
 
       light.color.setHSL(hu, sa, l)
       light.intensity = this.lightIntensity
+      light.position.y = Sizer.getHeight() * (perc - 0.2) + 0.1
     }
 
     // re-render resources
