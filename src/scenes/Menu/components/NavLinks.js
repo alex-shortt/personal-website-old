@@ -11,16 +11,35 @@ const Container = styled.div`
 `
 
 const LinkStyles = css`
-  cursor: pointer;
-  margin: 5px 0;
+  position: relative;
   text-decoration: none;
+  display: inline-block;
   color: black;
+  padding: 1px 4px;
+  transition: color ease 0.3s;
+  cursor: pointer;
+  margin: 8px 0;
   font-size: 2.5rem;
   font-family: proxima-nova, sans-serif;
-  transition: 0.15s linear;
 
   &:hover {
-    opacity: 0.75;
+    color: white;
+
+    &::after {
+      height: 100%;
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 0%;
+    left: 0;
+    bottom: 0;
+    background-color: black;
+    transition: all ease 0.3s;
   }
 `
 
