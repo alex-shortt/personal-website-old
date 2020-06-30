@@ -20,6 +20,9 @@ const Content = styled.div`
   padding: 50px;
   box-sizing: border-box;
   overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 `
 
 export default function Websites(props) {

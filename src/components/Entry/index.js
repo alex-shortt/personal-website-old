@@ -1,86 +1,121 @@
 import React from "react"
-import styled from "styled-components/macro"
+import styled, { keyframes } from "styled-components/macro"
 
-import { Button as ButtonBase } from "components/common"
+const enterSandman = keyframes`
+  0% {
+    pointer-events: none;
+    visibility: hidden; 
+  }
+  99% {
+    pointer-events: none;
+    visibility: hidden; 
+  }
+  100% {
+    pointer-events: all;
+    visibility: visible; 
+  }
+`
 
 const Container = styled.div`
-  width: 100%;
-  display: flex;
-  margin: 125px 0;
+  display: inline-block;
+  margin: 40px;
   justify-content: space-around;
+  position: relative;
+  width: 90%;
+  max-width: 450px;
+  cursor: pointer;
 
-  &:first-of-type {
-    margin-top: 0;
-  }
-
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-
-  &:nth-of-type(even) {
-    flex-direction: row-reverse;
+  &:hover {
+    & > a {
+      animation: ${enterSandman} 0.25s forwards;
+    }
 
     & > div {
-      margin-left: 0 !important;
-      margin-right: 20px;
-      text-align: right;
+      opacity: 1;
+      & > div::after {
+        height: 100%;
+      }
     }
   }
 `
 
 const Image = styled.img`
-  width: 425px;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+`
+
+const LinkBox = styled.a`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 6;
 `
 
 const TextBox = styled.div`
-  flex: 1;
-  margin-left: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 300px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+  color: white;
+  opacity: 0;
+  box-sizing: border-box;
+  transition: opacity 0.25s ease;
+`
+
+const TextWrapper = styled.div`
+  width: 100%;
+  position: relative;
+  padding: 5%;
+  box-sizing: border-box;
+
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 0%;
+    left: 0;
+    bottom: 0;
+    background-color: black;
+    transition: all ease 0.3s;
+  }
 `
 
 const Title = styled.h1`
-  font-size: 1.75rem;
+  font-size: 1.3rem;
   font-family: proxima-nova, sans-serif;
   margin: 0 0 12px;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.7px;
 `
 
 const Subtitle = styled.h3`
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-family: proxima-nova, sans-serif;
-  margin: 0 0 5px;
-  font-weight: 200;
-  //font-style: italic;
-`
-
-const Row = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-`
-
-const Button = styled(ButtonBase)`
-  font-size: 1rem;
+  font-weight: 100;
+  margin: 0;
+  font-style: italic;
 `
 
 export default function Entry(props) {
   const { id, title, subtitle, link, image } = props
   return (
-    <Container>
-      <Image src={image} className="colorful-shadow" />
+    <Container key={id}>
+      <Image src={image} />
+      <LinkBox href={link} />
       <TextBox>
-        <Title>{title}</Title>
-        <Subtitle>{subtitle}</Subtitle>
-        <br />
-        <Row>
-          <Button href={link} target="_blank" type="a">
-            Visit
-          </Button>
-          <Button to={`/websites/${id}`}>Read More</Button>
-        </Row>
+        <TextWrapper>
+          <Title>{title}</Title>
+          <Subtitle>{subtitle}</Subtitle>
+        </TextWrapper>
       </TextBox>
     </Container>
   )
