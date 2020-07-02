@@ -1,5 +1,13 @@
 import React from "react"
 import styled, { keyframes } from "styled-components/macro"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
+const ExternalIcon = styled(FontAwesomeIcon).attrs({
+  icon: "external-link-alt"
+})`
+  font-size: 0.8em;
+  margin: 0 20px 0 0;
+`
 
 const enterSandman = keyframes`
   0% {
@@ -27,7 +35,7 @@ const Container = styled.div`
 
   &:hover {
     & > a {
-      animation: ${enterSandman} 0.25s forwards;
+      animation: ${enterSandman} 0.2s forwards;
     }
 
     & > div {
@@ -113,7 +121,9 @@ export default function Entry(props) {
       <LinkBox href={link} />
       <TextBox>
         <TextWrapper>
-          <Title>{title}</Title>
+          <Title>
+            {title} <ExternalIcon />
+          </Title>
           <Subtitle>{subtitle}</Subtitle>
         </TextWrapper>
       </TextBox>
