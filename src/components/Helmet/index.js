@@ -6,7 +6,7 @@ export default function Helmet(props) {
 
   return (
     <ReactHelmet>
-      <title>{title ? `${title} | Alex Shortt` : "Alex Shortt"}</title>
+      <title>{title ? `${title} | alex shortt` : "alex shortt"}</title>
       {children}
     </ReactHelmet>
   )
