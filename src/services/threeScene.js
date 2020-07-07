@@ -14,17 +14,15 @@ export class ThreeScene {
 
     // scene
     const scene = new THREE.Scene()
-    scene.fog = new THREE.Fog(0x000000, 250, 2000)
 
     // camera
-    const camera = new THREE.PerspectiveCamera(50, width / height, 2, 2000)
+    const camera = new THREE.PerspectiveCamera(50, width / height, 2, 20000)
     camera.position.set(0, Sizer.getCameraHeight(), 0)
     camera.lookAt(0, camera.position.y, 1200)
 
     // renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setSize(width, height)
-    renderer.setClearColor(scene.fog.color, 1)
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
     renderer.setPixelRatio(window.devicePixelRatio)
@@ -134,7 +132,7 @@ export class ThreeScene {
     const noisebox = new NoiseBox()
     noisebox.addGuiFolder(gui)
 
-    const environment = new Environment({ azimuth: 0.21 })
+    const environment = new Environment(scene, { azimuth: 0.42 })
     environment.addGuiFolder(gui)
 
     environment.addToScene(renderer, scene)

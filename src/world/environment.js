@@ -5,17 +5,17 @@ import { Water } from "three/examples/jsm/objects/Water"
 import waterNormalsImg from "assets/textures/waternormals.jpg"
 
 export default class Environment {
-  constructor(props = {}) {
+  constructor(scene, props = {}) {
     const { inclination = 0.48, azimuth = 0.4 } = props
 
-    // directional light
-    const light = new THREE.DirectionalLight(0xffffff, 0.8)
+    // sun
+    const sun = new THREE.DirectionalLight(0xffffff, 0.8)
 
     // sky
     const sky = new Sky()
-    sky.material.uniforms.turbidity.value = 10
-    sky.material.uniforms.rayleigh.value = 2
-    sky.material.uniforms.luminance.value = 1
+    sky.scale.setScalar(10000)
+    sky.material.uniforms.turbidity.value = 15
+    sky.material.uniforms.rayleigh.value = 1.5
     sky.material.uniforms.mieCoefficient.value = 0.005
     sky.material.uniforms.mieDirectionalG.value = 0.8
 
@@ -28,80 +28,86 @@ export default class Environment {
       textureWidth: 512,
       textureHeight: 512,
       waterNormals: waterTexture,
-      sunColor: 0xffffff,
+      sunDirection: new THREE.Vector3(),
+      sunColor: 0x777777,
       waterColor: 0x001e0f,
-      distortionScale: 2.7,
-      fog: true,
-      size: 6
+      distortionScale: 4.7,
+      fog: scene.fog !== undefined,
+      size: 1,
+      alpha: 1
     })
     water.rotation.x = -Math.PI / 2
 
-    // cube camera for reflections
-    const cubeCamera = new THREE.CubeCamera(0.1, 1, 512)
-    cubeCamera.renderTarget.texture.generateMipmaps = true
-    cubeCamera.renderTarget.texture.minFilter = THREE.LinearMipmapLinearFilter
-
     // exports
+    this.scene = scene
     this.inclination = inclination
     this.azimuth = azimuth
+    this.sun = sun
     this.sky = sky
-    this.light = light
-    this.cubeCamera = cubeCamera
     this.water = water
+    this.time = 0
 
     // hooks
     this.updateSun()
   }
 
   addToScene = (renderer, scene) => {
-    const { cubeCamera, sky, light, water } = this
+    const { sky, sun, water } = this
 
-    cubeCamera.update(renderer, sky)
+    const pmremGenerator = new THREE.PMREMGenerator(renderer)
+
+    scene.add(sun)
+    scene.add(water)
+    scene.add(sky)
 
     // eslint-disable-next-line no-param-reassign
-    scene.background = this.cubeCamera.renderTarget
+    scene.environment = pmremGenerator.fromScene(sky).texture
 
-    scene.add(light)
-    scene.add(water)
+    this.pmremGenerator = pmremGenerator
   }
 
   addGuiFolder = gui => {
     const folder = gui.addFolder("Environment")
     folder.add(this, "inclination", 0, 0.5, 0.0001).onChange(this.updateSun)
     folder.add(this, "azimuth", 0, 1, 0.0001).onChange(this.updateSun)
+    folder.add(this, "time", 0, 23, 0.01).onChange(this.updateToTime)
     folder.open()
   }
 
   updateSun = () => {
-    const { inclination, azimuth, light, sky, water } = this
-
-    const parameters = {
-      distance: 800,
+    const {
       inclination,
-      azimuth
+      azimuth,
+      sun,
+      water,
+      sky,
+      pmremGenerator,
+      scene
+    } = this
+
+    const theta = Math.PI * (inclination - 0.5)
+    const phi = 2 * Math.PI * (azimuth - 0.5)
+    sun.position.x = Math.cos(phi)
+    sun.position.y = Math.sin(phi) * Math.sin(theta)
+    sun.position.z = Math.sin(phi) * Math.cos(theta)
+
+    sky.material.uniforms.sunPosition.value.copy(sun.position)
+    water.material.uniforms.sunDirection.value.copy(sun.position).normalize()
+
+    if (pmremGenerator) {
+      scene.environment = pmremGenerator.fromScene(sky).texture
     }
-
-    const theta = Math.PI * (parameters.inclination - 0.5)
-    const phi = 2 * Math.PI * (parameters.azimuth - 0.5)
-    light.position.x = parameters.distance * Math.cos(phi)
-    light.position.y = parameters.distance * Math.sin(phi) * Math.sin(theta)
-    light.position.z = parameters.distance * Math.sin(phi) * Math.cos(theta)
-
-    sky.material.uniforms.sunPosition.value = light.position.copy(
-      light.position
-    )
-
-    water.material.uniforms.sunDirection.value.copy(light.position).normalize()
-
-    this.needsCameraUpdate = true
   }
 
   updateToTime = () => {
+    const { time: overrideTime, sun } = this
+
     // update sun pos based on time
     const month = new Date().getMonth()
     const hours = new Date().getHours()
     const mins = new Date().getMinutes()
-    const time = (hours + mins / 60).toFixed(2)
+    const time =
+      overrideTime === 0 ? (hours + mins / 60).toFixed(2) : overrideTime
 
     // monthdiff greater during summer
     const monthDiff = (1 - Math.abs((month - 6) / 6)) * 0.05
@@ -110,27 +116,35 @@ export default class Environment {
     // brightest
     const minIncl = 0.24 - monthDiff
 
-    // sunrise from 6.5 to 8
-    // sunset from 18.5 to 20
+    const maxIntensity = 0.8
+    const minIntensity = 0.2
+
+    // sunrise from 6.5 to 9
+    // sunset from 17.5 to 20
 
     let newInclination
     if (time <= 6.5) {
       // early morning
       newInclination = maxIncl
-    } else if (time > 6.5 && time <= 8) {
+      sun.intensity = minIntensity
+    } else if (time > 6.5 && time <= 9) {
       // sunrise
-      const perc = (time - 6.5) / 1.5
+      const perc = (time - 6.5) / 2.5
       newInclination = maxIncl - perc * (maxIncl - minIncl)
-    } else if (time > 8 && time <= 18.5) {
+      sun.intensity = minIntensity + perc * (maxIntensity - minIntensity)
+    } else if (time > 9 && time <= 17.5) {
       // day
       newInclination = minIncl
-    } else if (time > 18.5 && time < 20) {
+      sun.intensity = maxIntensity
+    } else if (time > 17.5 && time < 20) {
       // sunset
-      const perc = (time - 18.5) / 1.5
+      const perc = (time - 17.5) / 2.5
       newInclination = minIncl + perc * (maxIncl - minIncl)
+      sun.intensity = maxIntensity - perc * (maxIntensity - minIntensity)
     } else {
       // dawn
       newInclination = maxIncl
+      sun.intensity = minIntensity
     }
 
     if (newInclination !== this.inclination) {
@@ -141,16 +155,7 @@ export default class Environment {
   }
 
   render = (renderer, scene) => {
-    const { water, cubeCamera, sky, needsCameraUpdate = false } = this
-
-    if (needsCameraUpdate) {
-      cubeCamera.update(renderer, sky)
-
-      // eslint-disable-next-line no-param-reassign
-      scene.background = cubeCamera.renderTarget
-
-      this.needsCameraUpdate = false
-    }
+    const { water } = this
 
     water.material.uniforms.time.value += 1.0 / 120.0
 

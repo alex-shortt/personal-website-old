@@ -22,7 +22,10 @@ export class NoiseSizer {
       return this.getHeight() * (1000 / window.innerHeight)
     }
 
-    return this.getHeight() * (window.innerWidth / window.innerHeight)
+    return Math.min(
+      1200,
+      this.getHeight() * (window.innerWidth / window.innerHeight)
+    )
   }
 
   getHeight = () => {
