@@ -53,6 +53,8 @@ export class ThreeScene {
     // events
     window.addEventListener("resize", this.handleWindowResize)
     window.addEventListener("mousemove", this.handleMouseMove)
+    window.addEventListener("touchmove", this.handleTouchMove)
+    window.addEventListener("touchstart", this.handleTouchStart)
   }
 
   handleWindowResize = () => {
@@ -81,10 +83,10 @@ export class ThreeScene {
     noisebox.handleResize()
   }
 
-  handleMouseMove = e => {
+  handleInput = (x, y) => {
     const { containerRef } = this
+
     const { clientWidth: width, clientHeight: height } = containerRef
-    const { clientX: x, clientY: y } = e
 
     const xPerc = x / width
     const centeredXRange = 0.55
@@ -105,6 +107,26 @@ export class ThreeScene {
       y: yOffset
     }
   }
+
+  handleTouchStart = e => {
+    this.touchStartX = e.touches[0].clientX
+    this.touchStartY = e.touches[0].clientY
+  }
+
+  handleTouchMove = e => {
+    const { touchStartX = 0, touchStartY = 0 } = this
+    const deltaX = e.touches[0].clientX - touchStartX
+    const deltaY = e.touches[0].clientY - touchStartY
+    this.handleInput(
+      window.innerWidth / 2 + deltaX,
+      window.innerHeight / 2 + deltaY
+    )
+  }
+
+  handleMouseMove = e =>
+    !this.touchStartX &&
+    !this.touchStartY &&
+    this.handleInput(e.clientX, e.clientY)
 
   sceneSetup = () => {
     const { renderer, scene, gui } = this
