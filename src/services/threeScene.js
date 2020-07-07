@@ -5,6 +5,7 @@ import * as dat from "dat.gui"
 import NoiseBox from "world/noisebox"
 import Environment from "world/environment"
 import Sizer from "services/noisesizer"
+import DisplayRenderer from "world/displayRenderer"
 
 export class ThreeScene {
   threeSetup = containerRef => {
@@ -30,6 +31,9 @@ export class ThreeScene {
     renderer.autoClear = false
     containerRef.appendChild(renderer.domElement) // mount using React ref
 
+    // DisplayRenderer
+    const displayRenderer = new DisplayRenderer(scene, containerRef)
+
     // stats
     const stats = new Stats()
     document.body.appendChild(stats.dom)
@@ -42,6 +46,7 @@ export class ThreeScene {
     this.scene = scene
     this.camera = camera
     this.renderer = renderer
+    this.displayRenderer = displayRenderer
     this.stats = stats
     this.gui = gui
 
@@ -51,17 +56,25 @@ export class ThreeScene {
   }
 
   handleWindowResize = () => {
-    const { containerRef, renderer, camera, environment, noisebox } = this
+    const {
+      containerRef,
+      renderer,
+      camera,
+      environment,
+      noisebox,
+      displayRenderer
+    } = this
     const { clientWidth: width, clientHeight: height } = containerRef
 
-    // resize renderer
+    // resize renderers
     renderer.setSize(width, height)
+    displayRenderer.handleResize(width, height)
 
     // camera
     camera.aspect = width / height
     camera.updateProjectionMatrix()
     camera.position.set(0, Sizer.getCameraHeight(), 0)
-    camera.lookAt(0, camera.position.y, 1200)
+    camera.lookAt(0, camera.position.y, 900)
 
     // resize classes
     environment.handleResize()
@@ -69,7 +82,7 @@ export class ThreeScene {
   }
 
   handleMouseMove = e => {
-    const { containerRef, renderer, camera, environment, noisebox } = this
+    const { containerRef } = this
     const { clientWidth: width, clientHeight: height } = containerRef
     const { clientX: x, clientY: y } = e
 
@@ -102,15 +115,6 @@ export class ThreeScene {
     const environment = new Environment({ azimuth: 0.21 })
     environment.addGuiFolder(gui)
 
-    this.offsetPos = 10
-    this.offsetRotY = 2
-    this.offsetRotX = 4
-    const folder = gui.addFolder("Parallax")
-    folder.add(this, "offsetPos", 0, 50, 1)
-    folder.add(this, "offsetRotY", -4, 4, 1)
-    folder.add(this, "offsetRotX", 0, 8, 1)
-    folder.open()
-
     environment.addToScene(renderer, scene)
     noisebox.addToScene(scene)
 
@@ -127,36 +131,22 @@ export class ThreeScene {
       camera,
       environment,
       stats,
-      offset
+      offset,
+      displayRenderer
     } = this
 
     stats.begin()
-    if (this.displayRef && offset) {
+
+    if (offset) {
       camera.position.x = 50 * (offset.x - 0.5)
       camera.position.y = Sizer.getCameraHeight() + 50 * (offset.y - 0.5)
-      camera.lookAt(0, Sizer.getCameraHeight(), 1200)
-      // camera.rotation.z = Math.PI * 2
-
-      const cameraRotX =
-        camera.rotation.x > 0
-          ? camera.rotation.x - Math.PI
-          : camera.rotation.x + Math.PI
-
-      const posX = (offset.x - 0.5) * this.offsetPos || 0
-      const posY = (offset.y - 0.5) * this.offsetPos || 0
-      const rotX = -cameraRotX * this.offsetRotX || 0
-      const rotY = -camera.rotation.y * this.offsetRotY || 0
-      const scale =
-        1 +
-        Math.sqrt(Math.pow(offset.x - 0.5, 2) + Math.pow(offset.y - 0.5, 2)) *
-          0.015
-
-      // console.log(rotX.toFixed(3), rotY.toFixed(3), scale.toFixed(3))
-      this.displayRef.style.transform = `translate(${posX}px, ${posY}px) rotateX(${rotX}rad) rotateY(${rotY}rad) `
+      camera.lookAt(0, Sizer.getCameraHeight(), 900)
     }
+
     noisebox.render(renderer, scene)
     environment.render(renderer, scene)
     renderer.render(scene, camera)
+    displayRenderer.render(scene, camera)
     stats.end()
 
     this.requestID = window.requestAnimationFrame(this.startAnimationLoop)
