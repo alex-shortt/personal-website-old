@@ -156,9 +156,10 @@ export default class NoiseBox {
 
     // update lights
     for (const [i, light] of lights.entries()) {
-      const x = -width / 2 + width * (i / (lights.length - 1))
-      const y = -height / 2
-      const z = distance - depth - 50
+      let x = -width / 2 + width * (i / (lights.length - 1))
+      x *= 0.8
+      const z = distance - depth - 500
+      const y = height / 2
       light.position.set(x, y, z)
     }
 

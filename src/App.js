@@ -14,6 +14,7 @@ import FullScreenLoading from "components/FullScreenLoading"
 import GA from "services/ga"
 import Display from "components/Display"
 import Environment from "components/Environment"
+import Loading from "components/Loading"
 import Websites from "scenes/Websites"
 import Art from "scenes/Art"
 import About from "scenes/About"
@@ -36,6 +37,7 @@ export default function App() {
         <Router>
           <GoogleAnalytics />
           <EnvironmentProvider>
+            <Loading />
             <Environment />
             <Display>
               <PageTransition
