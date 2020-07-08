@@ -132,7 +132,7 @@ export class ThreeScene {
     const noisebox = new NoiseBox()
     noisebox.addGuiFolder(gui)
 
-    const environment = new Environment(scene, { azimuth: 0.42 })
+    const environment = new Environment(scene, { azimuth: 0.456 })
     environment.addGuiFolder(gui)
 
     environment.addToScene(renderer, scene)

@@ -117,7 +117,7 @@ export default class Environment {
     const minIncl = 0.24 - monthDiff
 
     const maxIntensity = 0.8
-    const minIntensity = 0.2
+    const minIntensity = 0
 
     // sunrise from 6.5 to 9
     // sunset from 17.5 to 20

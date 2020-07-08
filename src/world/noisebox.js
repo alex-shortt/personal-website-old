@@ -19,7 +19,7 @@ export default class NoiseBox {
     this.speed = 0.5
     this.WIDTH = Sizer.getWidth()
     this.HEIGHT = Sizer.getHeight()
-    this.lightIntensity = 0.5
+    this.lightIntensity = 0.6
 
     // clock
     const clock = new THREE.Clock()
@@ -69,9 +69,10 @@ export default class NoiseBox {
     }
 
     for (const [i, light] of lights.entries()) {
-      const x = -WIDTH / 2 + WIDTH * (i / (lights.length - 1))
+      let x = -WIDTH / 2 + WIDTH * (i / (lights.length - 1))
+      x *= 0.8
       const y = HEIGHT / 2
-      const z = distance - depth - 200
+      const z = distance - depth - 500
       light.position.set(x, y, z)
     }
 
