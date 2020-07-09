@@ -28,6 +28,11 @@ const Image = styled.img.attrs({ src: cloudImg })`
   max-width: 100%;
   object-fit: contain;
   animation: ${float} 7s ease-in-out infinite;
+
+  @media screen and (max-width: 1100px) {
+    width: 100%;
+    height: auto;
+  }
 `
 
 export default function NavImage(props) {

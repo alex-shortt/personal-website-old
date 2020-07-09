@@ -31,6 +31,11 @@ const NavWrapper = styled.div`
   max-width: 700px;
   height: 90%;
   display: flex;
+
+  @media screen and (max-width: 1100px) {
+    flex-direction: column-reverse;
+    height: auto;
+  }
 `
 
 const ContactLinks = styled(ContactLinksBase)`

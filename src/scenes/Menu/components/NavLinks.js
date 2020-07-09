@@ -8,6 +8,14 @@ const Container = styled.div`
   flex-direction: column;
   margin-right: 7%;
   justify-content: center;
+
+  @media screen and (max-width: 1100px) {
+    //flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: unset;
+    margin-top: 5%;
+  }
 `
 
 const LinkStyles = css`
@@ -59,9 +67,9 @@ export default function NavLinks(props) {
       <Link to="/websites">websites</Link>
       <Link to="/art">art</Link>
       <Link to="/about">about</Link>
-      <Anchor href="https://medium.com" target="_blank">
-        blog
-      </Anchor>
+      {/* <Anchor href="https://medium.com" target="_blank"> */}
+      {/*  blog */}
+      {/* </Anchor> */}
     </Container>
   )
 }

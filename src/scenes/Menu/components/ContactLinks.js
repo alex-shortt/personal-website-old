@@ -6,6 +6,10 @@ const Container = styled.div`
   padding: 25px 0;
   display: flex;
   box-sizing: border-box;
+
+  @media screen and (max-width: 850px) {
+    padding: 15px 0;
+  }
 `
 
 const Icon = styled(FontAwesomeIcon)`
@@ -14,6 +18,10 @@ const Icon = styled(FontAwesomeIcon)`
 
   &:hover {
     opacity: 0.75;
+  }
+
+  @media screen and (max-width: 850px) {
+    font-size: 1.4rem;
   }
 `
 
@@ -34,6 +42,10 @@ const Text = styled.h2`
   font-weight: 500;
   letter-spacing: 1.7px;
   text-transform: uppercase;
+
+  @media screen and (max-width: 850px) {
+    font-size: 1.1rem;
+  }
 `
 
 function IconLink(props) {
