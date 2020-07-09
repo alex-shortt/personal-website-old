@@ -30,12 +30,22 @@ const Content = styled.div`
   display: flex;
   padding: 0 25px;
   justify-content: center;
+
+  @media screen and (max-width: 1100px) {
+    flex: unset;
+    padding: 15px 0 0;
+  }
 `
 
 const Wrapper = styled.div`
   box-sizing: border-box;
   max-width: 350px;
   animation: ${fadeIn} 1s ease-out forwards;
+
+  @media screen and (max-width: 1100px) {
+    width: 90%;
+    max-width: 400px;
+  }
 `
 
 const Title = styled.h2`
@@ -82,6 +92,11 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   overflow: hidden;
+
+  @media screen and (max-width: 1100px) {
+    flex-direction: column;
+    justify-content: center;
+  }
 `
 
 const BackgroundImage = styled.div`
@@ -91,6 +106,13 @@ const BackgroundImage = styled.div`
   background-size: cover;
   background-image: url(${props => props.imgSrc});
   animation: ${slideIn} 1s ease-out forwards;
+
+  @media screen and (max-width: 1100px) {
+    max-height: 40%;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+  }
 `
 
 export default function PieceDisplay(props) {

@@ -37,7 +37,7 @@ export default function ReadMore(props) {
   return (
     <SceneContainer>
       <Helmet title={piece.title} />
-      <Navbar location={`art - ${piece.title.toLowerCase()}`} backLink="/art" />
+      <Navbar location={piece.title.toLowerCase()} backLink="/art" />
       <Content>
         <Switch location={location}>
           <Route path="/art/latent-explorer" exact component={LatentExplorer} />

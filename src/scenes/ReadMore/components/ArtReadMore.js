@@ -21,7 +21,7 @@ const Header = styled.div`
   box-sizing: border-box;
   background: linear-gradient(
     90deg,
-    ${props => (props.dark ? "black" : "white")},
+    ${props => (props.dark ? "black" : "white")} 30%,
     transparent
   );
 `
