@@ -26,11 +26,11 @@ const enterSandman = keyframes`
 
 const Container = styled.div`
   display: inline-block;
-  margin: 40px;
+  margin: 30px 15px;
   justify-content: space-around;
   position: relative;
   width: 90%;
-  max-width: 450px;
+  max-width: 400px;
   cursor: pointer;
 
   &:hover {
@@ -63,6 +63,7 @@ const LinkBox = styled.a`
   pointer-events: none;
   opacity: 0;
   z-index: 6;
+  cursor: pointer;
 `
 
 const TextBox = styled.div`
@@ -118,7 +119,7 @@ export default function Entry(props) {
   return (
     <Container key={id}>
       <Image src={image} />
-      <LinkBox href={link} />
+      <LinkBox href={link} target="_blank" />
       <TextBox>
         <TextWrapper>
           <Title>

@@ -1,7 +1,7 @@
 const awgeSite = {
   id: "awge",
   title: "AWGE",
-  subtitle: "A creative agency founded by A$AP Rocky",
+  subtitle: "A creative group founded by A$AP Rocky",
   link: "https://awge.com",
   image: "https://assets.mediated.world/site/awge/awge-main.png"
 }
@@ -57,7 +57,7 @@ const pitsSite = {
 const personalSite = {
   id: "personal",
   title: "Personal Site",
-  subtitle: "My first personal site, still like it",
+  subtitle: "My first personal site",
   link: "http://first-personal-site.s3-website-us-west-1.amazonaws.com/",
   image: "https://assets.mediated.world/site/personal/personal-main.png"
 }

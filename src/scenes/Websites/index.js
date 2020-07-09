@@ -17,7 +17,7 @@ const Content = styled.div`
   width: 100%;
   flex: 1;
   margin: 0 auto;
-  padding: 50px;
+  padding: 25px;
   box-sizing: border-box;
   overflow-y: auto;
   display: flex;
