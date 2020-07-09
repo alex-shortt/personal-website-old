@@ -7,6 +7,8 @@ import Environment from "world/environment"
 import Sizer from "services/noisesizer"
 import DisplayRenderer from "world/displayRenderer"
 
+const SHOW_DEV_TOOLS = false // show stats and gui controls
+
 export class ThreeScene {
   threeSetup = containerRef => {
     // get container dimensions and use them for scene sizing
@@ -16,7 +18,7 @@ export class ThreeScene {
     const scene = new THREE.Scene()
 
     // camera
-    const camera = new THREE.PerspectiveCamera(50, width / height, 2, 20000)
+    const camera = new THREE.PerspectiveCamera(50, width / height, 2, 5000)
     camera.position.set(0, Sizer.getCameraHeight(), 0)
     camera.lookAt(0, camera.position.y, 1200)
 
@@ -33,11 +35,17 @@ export class ThreeScene {
     const displayRenderer = new DisplayRenderer(scene, containerRef)
 
     // stats
-    const stats = new Stats()
-    document.body.appendChild(stats.dom)
+    if (SHOW_DEV_TOOLS) {
+      const stats = new Stats()
+      document.body.appendChild(stats.dom)
+      this.stats = stats
+    }
 
     // gui
-    const gui = new dat.GUI()
+    if (SHOW_DEV_TOOLS) {
+      const gui = new dat.GUI()
+      this.gui = gui
+    }
 
     // exports
     this.containerRef = containerRef
@@ -45,8 +53,6 @@ export class ThreeScene {
     this.camera = camera
     this.renderer = renderer
     this.displayRenderer = displayRenderer
-    this.stats = stats
-    this.gui = gui
 
     // events
     window.addEventListener("resize", this.handleWindowResize)
@@ -130,10 +136,12 @@ export class ThreeScene {
     const { renderer, scene, gui } = this
 
     const noisebox = new NoiseBox()
-    noisebox.addGuiFolder(gui)
-
     const environment = new Environment(scene, { azimuth: 0.456 })
-    environment.addGuiFolder(gui)
+
+    if (SHOW_DEV_TOOLS) {
+      noisebox.addGuiFolder(gui)
+      environment.addGuiFolder(gui)
+    }
 
     environment.addToScene(renderer, scene)
     noisebox.addToScene(scene)
@@ -155,7 +163,9 @@ export class ThreeScene {
       displayRenderer
     } = this
 
-    stats.begin()
+    if (SHOW_DEV_TOOLS) {
+      stats.begin()
+    }
 
     if (offset) {
       camera.position.x = 50 * (offset.x - 0.5)
@@ -167,7 +177,10 @@ export class ThreeScene {
     environment.render(renderer, scene)
     renderer.render(scene, camera)
     displayRenderer.render(scene, camera)
-    stats.end()
+
+    if (SHOW_DEV_TOOLS) {
+      stats.end()
+    }
 
     this.requestID = window.requestAnimationFrame(this.startAnimationLoop)
   }

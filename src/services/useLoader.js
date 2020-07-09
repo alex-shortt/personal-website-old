@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 
 import waterNormalsImg from "assets/textures/waternormals.jpg"
 import cloudImg from "assets/images/cloud.png"
@@ -26,7 +26,7 @@ function loadImage(url) {
 }
 
 export default () => {
-  const [landedPage] = useState(window.location.pathname.replace("/", ""))
+  const landedPage = useRef(window.location.pathname.replace("/", ""))
   const [setup, setSetup] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [minTimePassed, setMinTimePassed] = useState(false)
@@ -36,11 +36,11 @@ export default () => {
       setTimeout(() => setMinTimePassed(true), MIN_DURATION * 1000)
 
       const imagesToLoad = [...siteImages]
-      if (landedPage === "") {
+      if (landedPage.current === "") {
         imagesToLoad.push(...homeImages)
-      } else if (landedPage === "websites") {
+      } else if (landedPage.current === "websites") {
         imagesToLoad.push(...websiteImages)
-      } else if (landedPage.includes("art")) {
+      } else if (landedPage.current.includes("art")) {
         imagesToLoad.push(...artImages)
       }
 
