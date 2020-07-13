@@ -22,6 +22,10 @@ const Content = styled.div`
   padding: 25px;
   flex: 1;
   overflow-y: auto;
+
+  @media screen and (max-width: 850px) {
+    padding: 25px 10px;
+  }
 `
 
 export default function ReadMore(props) {

@@ -21,6 +21,10 @@ const Text = styled.p`
   font-size: 1.1rem;
   margin: 0.25em 0;
   line-height: 1.45em;
+
+  & > a {
+    color: inherit;
+  }
 `
 
 const CenteredText = styled.div`
@@ -62,8 +66,8 @@ export default function TextContainer(props) {
     <Container {...restProps} ref={scrollContainer}>
       <Title>Bio</Title>
       <Text>
-        Between the robotics team and hackathons, I grew up living and breathing
-        code. In highschool I somehow got the job to make the website for A$AP
+        Between home-made drones and hackathons, I grew up living and breathing
+        code. In highschool I managed to land a job to make the website for A$AP
         Rocky, <AwgeLink />, which opened me up to the creative side of
         programming. I kept this with me as I went to UC Santa Barbara to study
         Computer Science, where I found Media Arts classes to help me formalize
@@ -76,13 +80,13 @@ export default function TextContainer(props) {
       <br />
       <Title>Statement</Title>
       <Text>
-        I see reality as one massive vector space: some finite number of
-        dimensions with a vector in the space corresponding to an idea.
-        Generative Adversarial Networks (GANs) are a computer's implementation
-        of this concept, at least within the image domain. I believe that
-        researching this framework will lead to ( 1 ) a clearer understanding of
-        our own reality and its meaning and ( 2 ) a means to <i>create</i> a new
-        reality to continue the infinite regress of creation.
+        I see reality as one vector space: an infinite number of dimensions with
+        a vector in the space corresponding to an idea. Generative Adversarial
+        Networks (GANs) are a computer's implementation of this concept, at
+        least within the image domain. I believe that researching this framework
+        will lead to ( 1 ) a clearer understanding of our own reality and its
+        meaning and ( 2 ) a means to <i>create</i> a new reality to continue the
+        infinite chain of creation.
         <br />
         <br />
         My work aims to abstract this definition of reality to encompass both

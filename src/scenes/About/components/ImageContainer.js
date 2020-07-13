@@ -12,7 +12,13 @@ const Container = styled.div`
 const Video = styled.video`
   width: 90%;
   max-width: 400px;
-  box-shadow: 0px 0px 14px 2px #0000006b;
+
+  @media screen and (max-width: 1000px) {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
 `
 
 export default function VideoContainer(props) {

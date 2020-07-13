@@ -21,14 +21,22 @@ const Content = styled.div`
   display: flex;
   flex: 1;
   overflow-y: auto;
+
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+    margin-top: 10px;
+  }
 `
 
 const ImageContainer = styled(ImageContainerBase)`
   flex: 0.8;
+  @media screen and (max-width: 1000px) {
+    height: 30%;
+  }
 `
 
 const Spacer = styled.div`
-  flex: 0.15;
+  flex: 0.05;
 `
 
 const TextContainer = styled(TextContainerBase)`
