@@ -36,7 +36,7 @@ export default class NoiseBox {
     const { WIDTH, HEIGHT, distance } = this
 
     // geometry
-    const geometry = new THREE.PlaneGeometry(2000, 2000, 200, 200)
+    const geometry = new THREE.PlaneGeometry(2000, 2000, 100, 100)
     geometry.dynamic = true
 
     // material
@@ -114,16 +114,21 @@ export default class NoiseBox {
 
     const time = clock.getElapsedTime()
 
-    // update noise
-    for (let i = 0; i < plane.geometry.vertices.length; i += 1) {
-      const vertex = plane.geometry.vertices[i]
-      const x = (vertex.x + 1000) / resolution
-      const y = (vertex.y + 1000) / resolution
-      const vNoise = noise.get(x, y) * density
+    // // update noise
+    if (depth > 0) {
+      for (let i = 0; i < plane.geometry.vertices.length; i += 1) {
+        const vertex = plane.geometry.vertices[i]
+        const x = (vertex.x + 1000) / resolution
+        const y = (vertex.y + 1000) / resolution
+        const vNoise = noise.get(x, y) * density
 
-      const heightMult = Math.cos(time * speed + vNoise) * 0.5 + 0.5
+        const heightMult = Math.cos(time * speed + vNoise) * 0.5 + 0.5
 
-      vertex.z = heightMult * depth
+        vertex.z = heightMult * depth
+      }
+
+      // re-render resources
+      plane.geometry.verticesNeedUpdate = true
     }
 
     // update lights
@@ -139,9 +144,6 @@ export default class NoiseBox {
       light.intensity = this.lightIntensity
       light.position.y = Sizer.getHeight() * (perc - 0.2) + 0.1
     }
-
-    // re-render resources
-    plane.geometry.verticesNeedUpdate = true
   }
 
   handleResize = () => {

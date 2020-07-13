@@ -18,16 +18,18 @@ export class ThreeScene {
     const scene = new THREE.Scene()
 
     // camera
-    const camera = new THREE.PerspectiveCamera(50, width / height, 2, 5000)
+    const camera = new THREE.PerspectiveCamera(50, width / height, 100, 5000)
     camera.position.set(0, Sizer.getCameraHeight(), 0)
     camera.lookAt(0, camera.position.y, 1200)
 
     // renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true })
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: false,
+      powerPreference: "high-performance"
+    })
     renderer.setSize(width, height)
-    renderer.shadowMap.enabled = true
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap
-    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setPixelRatio(Math.min(3, window.devicePixelRatio))
     renderer.autoClear = false
     containerRef.appendChild(renderer.domElement) // mount using React ref
 
