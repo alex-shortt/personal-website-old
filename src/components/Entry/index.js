@@ -1,28 +1,5 @@
 import React from "react"
-import styled, { keyframes } from "styled-components/macro"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
-const ExternalIcon = styled(FontAwesomeIcon).attrs({
-  icon: "external-link-alt"
-})`
-  font-size: 0.8em;
-  margin: 0 20px 0 0;
-`
-
-const enterSandman = keyframes`
-  0% {
-    pointer-events: none;
-    visibility: hidden; 
-  }
-  99% {
-    pointer-events: none;
-    visibility: hidden; 
-  }
-  100% {
-    pointer-events: all;
-    visibility: visible; 
-  }
-`
+import styled from "styled-components/macro"
 
 const Container = styled.div`
   display: inline-block;
@@ -31,20 +8,6 @@ const Container = styled.div`
   position: relative;
   width: 90%;
   max-width: 400px;
-  cursor: pointer;
-
-  &:hover {
-    & > a {
-      animation: ${enterSandman} 0.2s forwards;
-    }
-
-    & > div {
-      opacity: 1;
-      & > div::after {
-        height: 100%;
-      }
-    }
-  }
 `
 
 const Image = styled.img`
@@ -54,42 +17,41 @@ const Image = styled.img`
   object-fit: contain;
 `
 
-const LinkBox = styled.a`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 6;
-  cursor: pointer;
-`
-
 const TextBox = styled.div`
   width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 5;
-  color: white;
-  opacity: 0;
+  color: black;
   box-sizing: border-box;
-  transition: opacity 0.25s ease;
+  padding: 10px 0;
+  transform: translateY(-4px);
 `
 
-const TextWrapper = styled.div`
-  width: 100%;
+const TitleLink = styled.a`
+  font-size: 1.4rem;
+  font-family: proxima-nova, sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.7px;
   position: relative;
-  padding: 5%;
-  box-sizing: border-box;
+  cursor: pointer;
+  transition: color ease 0.3s;
+  color: black;
+  padding: 10px;
+  display: block;
+  margin-bottom: 5px;
+
+  &:hover {
+    color: white;
+    &::after {
+      width: 100%;
+    }
+  }
 
   &::after {
     content: "";
     position: absolute;
     z-index: -1;
-    width: 100%;
-    height: 0%;
+    height: 100%;
+    width: 0%;
     left: 0;
     bottom: 0;
     background-color: black;
@@ -97,21 +59,13 @@ const TextWrapper = styled.div`
   }
 `
 
-const Title = styled.h1`
-  font-size: 1.3rem;
-  font-family: proxima-nova, sans-serif;
-  margin: 0 0 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1.7px;
-`
-
 const Subtitle = styled.h3`
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-family: proxima-nova, sans-serif;
   font-weight: 100;
   margin: 0;
   font-style: italic;
+  padding: 0 10px;
 `
 
 export default function Entry(props) {
@@ -119,14 +73,11 @@ export default function Entry(props) {
   return (
     <Container key={id}>
       <Image src={image} />
-      <LinkBox href={link} target="_blank" />
       <TextBox>
-        <TextWrapper>
-          <Title>
-            {title} <ExternalIcon />
-          </Title>
-          <Subtitle>{subtitle}</Subtitle>
-        </TextWrapper>
+        <TitleLink href={link} target="_blank">
+          {title}
+        </TitleLink>
+        <Subtitle>{subtitle}</Subtitle>
       </TextBox>
     </Container>
   )

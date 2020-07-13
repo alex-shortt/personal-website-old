@@ -1,7 +1,7 @@
 const awgeSite = {
   id: "awge",
   title: "AWGE",
-  subtitle: "A creative group founded by A$AP Rocky",
+  subtitle: "A creative group founded by A$AP Rocky.",
   link: "https://awge.com",
   image: "https://assets.mediated.world/site/awge/awge-main.png"
 }
