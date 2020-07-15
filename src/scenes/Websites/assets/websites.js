@@ -50,7 +50,7 @@ const pitsSite = {
   id: "pits",
   title: "Puzzle In The Sky",
   subtitle: "LA-Based Streetwear Brand from Zack Bia",
-  link: "https://puzzleinthesky.com",
+  link: "http://pits-site.s3-website-us-west-1.amazonaws.com/",
   image: "https://assets.mediated.world/site/pits/pits-main.png"
 }
 
