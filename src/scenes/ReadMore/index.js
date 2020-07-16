@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components/macro"
-import { Route, Switch } from "react-router-dom"
+import { Route, Switch, Redirect } from "react-router-dom"
 
 import SceneContainerBase from "components/SceneContainer"
 import Menu from "scenes/Menu"
@@ -37,6 +37,10 @@ export default function ReadMore(props) {
   } = props
 
   const piece = pieces.find(pic => pic.id === id)
+
+  if (!piece) {
+    return <Redirect to="/art" />
+  }
 
   return (
     <SceneContainer>

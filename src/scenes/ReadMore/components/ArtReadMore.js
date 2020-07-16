@@ -1,23 +1,24 @@
 import React from "react"
 import styled from "styled-components/macro"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import pieces from "scenes/Art/assets/pieces"
 
 const Container = styled.div`
   width: 100%;
   margin: 0 auto;
-  max-width: 650px;
+  max-width: 900px;
 `
 
 const Header = styled.div`
   width: 100%;
-  margin-bottom: 20px;
   min-height: 100px;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 30px;
+  margin: 0 0 20px;
   box-sizing: border-box;
   background: linear-gradient(
     90deg,

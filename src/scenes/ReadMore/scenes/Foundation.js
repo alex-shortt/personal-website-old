@@ -11,9 +11,19 @@ const Text = styled.p`
   line-height: 1.45em;
 `
 
+const Title = styled.h2`
+  font-family: proxima-nova, sans-serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin: 0.25em 0 0;
+  text-transform: uppercase;
+  letter-spacing: 1.7px;
+`
+
 export default function Foundation(props) {
   return (
     <ArtReadMore id="foundation" dark>
+      <Title>Statement</Title>
       <Text>
         This piece stood out from my show as the most simple artifact from{" "}
         <i>mediated.world</i>. It depicts a direct connection of information
@@ -25,6 +35,8 @@ export default function Foundation(props) {
         intensity of the same output. I introduced this piece at the
         mediated.world Showcase and eventually installed it in more places.
       </Text>
+      <br />
+      <Title>Gallery</Title>
     </ArtReadMore>
   )
 }

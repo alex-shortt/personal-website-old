@@ -1,5 +1,5 @@
 import { library } from "@fortawesome/fontawesome-svg-core"
-import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons"
+import { faPlay } from "@fortawesome/free-solid-svg-icons"
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
 import {
   faLinkedin,
@@ -8,8 +8,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons"
 
 library.add(faEnvelope)
-
-library.add(faExternalLinkAlt)
+library.add(faPlay)
 
 library.add(faLinkedin)
 library.add(faInstagram)
