@@ -1,77 +1,7 @@
-import React, { useState, useCallback } from "react"
-import styled from "styled-components/macro"
-import ReactPlayerBase from "react-player"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import React from "react"
 
 import ArtReadMore from "../components/ArtReadMore"
-
-const Text = styled.p`
-  font-family: proxima-nova, sans-serif;
-  font-weight: 200;
-  font-size: 1.3rem;
-  margin: 0.25em 0;
-  line-height: 1.45em;
-`
-
-const Title = styled.h2`
-  font-family: proxima-nova, sans-serif;
-  font-weight: 500;
-  font-size: 1.2rem;
-  margin: 0.25em 0 0;
-  text-transform: uppercase;
-  letter-spacing: 1.7px;
-`
-
-const ImageContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-`
-
-const Image = styled.img`
-  margin: 15px;
-  max-width: 350px;
-  max-height: 500px;
-`
-
-const ReactPlayer = styled(ReactPlayerBase)`
-  width: 100% !important;
-  height: 100% !important;
-`
-
-const Container = styled.div`
-  margin: 15px;
-  width: 95%;
-  max-width: 400px;
-  max-height: 500px;
-  position: relative;
-  cursor: pointer;
-`
-
-const Indicator = styled(FontAwesomeIcon)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  mix-blend-mode: difference;
-  z-index: 5;
-  color: white;
-  filter: brightness(1.5);
-`
-
-function Video(props) {
-  const { url } = props
-  const [playing, setPlaying] = useState(false)
-
-  const toggle = useCallback(() => setPlaying(!playing), [playing])
-
-  return (
-    <Container onClick={toggle}>
-      <ReactPlayer url={url} playing={playing} />
-      {!playing && <Indicator icon="play" />}
-    </Container>
-  )
-}
+import { Video, Title, Text, Image, ImageContainer } from "../components/common"
 
 export default function MediatedWorld(props) {
   return (

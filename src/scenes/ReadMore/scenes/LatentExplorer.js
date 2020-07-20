@@ -1,19 +1,12 @@
 import React from "react"
-import styled from "styled-components/macro"
 
 import ArtReadMore from "../components/ArtReadMore"
-
-const Text = styled.p`
-  font-family: proxima-nova, sans-serif;
-  font-weight: 200;
-  font-size: 1.3rem;
-  margin: 0.25em 0;
-  line-height: 1.45em;
-`
+import { Video, Title, Text, Image, ImageContainer } from "../components/common"
 
 export default function LatentExplorer(props) {
   return (
     <ArtReadMore id="latent-explorer">
+      <Title>Statement</Title>
       <Text>
         This piece showcases a direct connection between humans and computers by
         connecting ranges of expression in each. For the human range of
@@ -25,6 +18,16 @@ export default function LatentExplorer(props) {
         expression and were eventually able to control the flow of ideas to
         craft their own story.
       </Text>
+      <br />
+      <Title>Gallery</Title>
+      <ImageContainer>
+        <Image src="https://assets.mediated.world/site/latent-explorer/gan-output.png" />
+        <Video url="https://assets.mediated.world/site/latent-explorer/dancing.mp4" />
+        <Video
+          url="https://assets.mediated.world/site/latent-explorer/wide-video.mp4"
+          double
+        />
+      </ImageContainer>
     </ArtReadMore>
   )
 }

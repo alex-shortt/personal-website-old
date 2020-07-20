@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components/macro"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import pieces from "scenes/Art/assets/pieces"
 
