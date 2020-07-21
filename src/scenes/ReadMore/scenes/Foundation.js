@@ -1,24 +1,7 @@
 import React from "react"
-import styled from "styled-components/macro"
 
 import ArtReadMore from "../components/ArtReadMore"
-
-const Text = styled.p`
-  font-family: proxima-nova, sans-serif;
-  font-weight: 200;
-  font-size: 1.3rem;
-  margin: 0.25em 0;
-  line-height: 1.45em;
-`
-
-const Title = styled.h2`
-  font-family: proxima-nova, sans-serif;
-  font-weight: 500;
-  font-size: 1.2rem;
-  margin: 0.25em 0 0;
-  text-transform: uppercase;
-  letter-spacing: 1.7px;
-`
+import { Video, Title, Text, Image, ImageContainer } from "../components/common"
 
 export default function Foundation(props) {
   return (
@@ -36,7 +19,23 @@ export default function Foundation(props) {
         mediated.world Showcase and eventually installed it in more places.
       </Text>
       <br />
+      <Title>Links</Title>
+      <Text>
+        <a
+          href="https://github.com/alex-shortt/mediated-world-pieces/tree/master/pieces/Foundation"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          foundation source code
+        </a>{" "}
+        - code I made to analyze microphone input and send messages over serial
+      </Text>
+      <br />
       <Title>Gallery</Title>
+      <ImageContainer>
+        <Image src="https://assets.mediated.world/site/foundation/setup.jpg" />
+        <Video url="https://assets.mediated.world/site/foundation/inbed.mp4" />
+      </ImageContainer>
     </ArtReadMore>
   )
 }

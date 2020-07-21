@@ -19,6 +19,27 @@ export default function LatentExplorer(props) {
         craft their own story.
       </Text>
       <br />
+      <Title>Links</Title>
+      <Text>
+        <a
+          href="https://github.com/alex-shortt/nature-gan"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          nature-gan
+        </a>{" "}
+        - GAN code used to train a model on images of a mountain
+        <br />
+        <a
+          href="https://nature-gan-data.s3.us-east-2.amazonaws.com/flickr-mountain-generator-200.pt"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          flickr-mountain-generator-200.pt
+        </a>{" "}
+        - link to download final generator model (500MB)
+      </Text>
+      <br />
       <Title>Gallery</Title>
       <ImageContainer>
         <Image src="https://assets.mediated.world/site/latent-explorer/gan-output.png" />

@@ -9,6 +9,34 @@ export const Text = styled.p`
   font-size: 1.3rem;
   margin: 0.25em 0;
   line-height: 1.45em;
+
+  & > a {
+    color: black;
+    transition: color ease 0.3s;
+    position: relative;
+    text-decoration: none;
+    padding: 2px 4px;
+
+    &:hover {
+      color: white;
+
+      &::after {
+        height: 100%;
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      height: 2px;
+      left: 0;
+      bottom: 0;
+      background-color: black;
+      transition: all ease 0.3s;
+    }
+  }
 `
 
 export const Title = styled.h2`
