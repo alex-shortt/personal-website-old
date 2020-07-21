@@ -30,6 +30,8 @@ const Text = styled.p`
 const CenteredText = styled.div`
   width: 100%;
   text-align: center;
+  font-size: 1.25em;
+  line-height: 1.4em;
 `
 
 const AwgeLink = () => (
