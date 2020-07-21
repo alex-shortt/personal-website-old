@@ -45,7 +45,7 @@ const MetaplugLink = () => (
 )
 
 export default function TextContainer(props) {
-  const { setScrollPerc, ...restProps } = props
+  const { video, ...restProps } = props
 
   // update scroll percentage
   const [setup, setSetup] = useState(false)
@@ -56,11 +56,18 @@ export default function TextContainer(props) {
         const elem = e.target
         const maxScroll = elem.scrollHeight - elem.offsetHeight
         const perc = elem.scrollTop / maxScroll
-        setScrollPerc(perc)
+
+        if (video.current) {
+          const maxTime = video.current.duration
+          const timePos = perc * maxTime
+          if (timePos) {
+            video.current.currentTime = timePos
+          }
+        }
       })
       setSetup(true)
     }
-  }, [setScrollPerc, setup])
+  }, [setup, video])
 
   return (
     <Container {...restProps} ref={scrollContainer}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useRef } from "react"
 import styled from "styled-components/macro"
 
 import Helmet from "components/Helmet"
@@ -44,16 +44,16 @@ const TextContainer = styled(TextContainerBase)`
 `
 
 export default function About(props) {
-  const [scrollPerc, setScrollPerc] = useState(0)
+  const video = useRef()
 
   return (
     <SceneContainer>
       <Helmet title="About" />
       <Navbar location="about" backLink="/" />
       <Content>
-        <ImageContainer scrollPerc={scrollPerc} />
+        <ImageContainer video={video} />
         <Spacer />
-        <TextContainer setScrollPerc={setScrollPerc} />
+        <TextContainer video={video} />
       </Content>
     </SceneContainer>
   )
