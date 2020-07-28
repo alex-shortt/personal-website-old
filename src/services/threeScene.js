@@ -61,6 +61,7 @@ export class ThreeScene {
     window.addEventListener("mousemove", this.handleMouseMove)
     window.addEventListener("touchmove", this.handleTouchMove)
     window.addEventListener("touchstart", this.handleTouchStart)
+    window.addEventListener("touchend", this.handleTouchEnd)
   }
 
   handleWindowResize = () => {
@@ -115,17 +116,46 @@ export class ThreeScene {
   }
 
   handleTouchStart = e => {
+    // remember where touch started
     this.touchStartX = e.touches[0].clientX
     this.touchStartY = e.touches[0].clientY
   }
 
   handleTouchMove = e => {
     const { touchStartX = 0, touchStartY = 0 } = this
+
+    // get delta from touch start
     const deltaX = e.touches[0].clientX - touchStartX
     const deltaY = e.touches[0].clientY - touchStartY
+
+    if (!this.touchOffsetX) {
+      this.touchOffsetX = 0
+      this.touchOffsetY = 0
+    }
+
+    // move based on aggregated offset + deltas
     this.handleInput(
-      window.innerWidth / 2 + deltaX,
-      window.innerHeight / 2 + deltaY
+      window.innerWidth / 2 + this.touchOffsetX + deltaX,
+      window.innerHeight / 2 + this.touchOffsetY + deltaY
+    )
+  }
+
+  handleTouchEnd = e => {
+    const touch = e.changedTouches[0]
+    const { clientX, clientY } = touch
+    const { touchStartX = 0, touchStartY = 0 } = this
+
+    // calc x aggregated offset as total delta
+    this.touchOffsetX += clientX - touchStartX
+    this.touchOffsetX = Math.min(this.touchOffsetX, window.innerWidth / 2)
+    this.touchOffsetX = Math.max(this.touchOffsetX, -window.innerWidth / 2)
+
+    this.touchOffsetY += clientY - touchStartY
+    this.touchOffsetY = Math.min(this.touchOffsetY, window.innerHeight / 2)
+    this.touchOffsetY = Math.max(this.touchOffsetY, -window.innerHeight / 2)
+
+    console.log(
+      `done: ${this.touchOffsetX.toFixed(2)}, ${this.touchOffsetY.toFixed(2)}`
     )
   }
 
