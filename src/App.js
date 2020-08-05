@@ -47,7 +47,6 @@ export default function App() {
                     <Route path="/websites" exact component={Websites} />
                     <Route path="/art" exact component={Art} />
                     <Route path="/about" exact component={About} />
-                    <Route path="/websites/:id" exact component={ReadMore} />
                     <Route path="/art/:id" exact component={ReadMore} />
                     <Redirect to="/" />
                     {/* TODO: 404 Page */}

@@ -92,6 +92,6 @@
     "typeface-roboto": "^0.0.54",
     "use-deep-compare-effect": "^1.2.0",
     "use-react-router": "^1.0.7",
-    "uuid": "^3.3.3"
+    "uuid": "^8.3.0"
   }
 }

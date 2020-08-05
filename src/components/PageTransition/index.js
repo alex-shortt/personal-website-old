@@ -5,6 +5,7 @@ import {
   CSSTransition
 } from "react-transition-group"
 import { Route } from "react-router-dom"
+import { v4 as uuidv4 } from "uuid"
 
 import { EnvironmentContext } from "services/environment"
 
@@ -22,6 +23,8 @@ const TransitionGroup = styled(TransitionGroupBase)`
   position: relative;
 `
 
+let currentAnim
+
 // ease-in, 0 maps to 1 and 1 maps to 0
 const ease = x => (Math.cos(Math.PI * x) + 1) / 2
 
@@ -31,11 +34,18 @@ export default function PageTransition(props) {
 
   const onEnter = () => {
     const startDate = new Date()
+    const thisAnim = uuidv4()
+    currentAnim = thisAnim
 
     const animIn = () => {
       const diff = new Date() - startDate - DEPTH_DELAY
       const perc = Math.min(1, Math.max(0, diff / DEPTH_TIME))
       const eased = 1 - ease(perc)
+
+      if (currentAnim !== thisAnim) {
+        return
+      }
+
       if (perc < 1) {
         scene.noisebox.depth = eased * MAX_DEPTH
         setTimeout(animIn, 1)
@@ -46,6 +56,11 @@ export default function PageTransition(props) {
       const diff = new Date() - startDate - 2 * FADE_TIME - DELAY + DEPTH_TIME
       const perc = diff / DEPTH_TIME
       const eased = ease(perc)
+
+      if (currentAnim !== thisAnim) {
+        return
+      }
+
       if (perc <= 0) {
         setTimeout(animOut, 1)
       } else if (perc > 0 && perc < 1) {
