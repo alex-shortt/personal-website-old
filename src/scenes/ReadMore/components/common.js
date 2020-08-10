@@ -58,11 +58,16 @@ export const Image = styled.img`
   margin: 15px;
   max-width: 350px;
   max-height: 500px;
+  object-fit: contain;
 `
 
 export const ReactPlayer = styled(ReactPlayerBase)`
   width: 100% !important;
   height: 100% !important;
+
+  & > video {
+    object-fit: contain;
+  }
 `
 
 export const Container = styled.div`
@@ -79,21 +84,30 @@ export const Indicator = styled(FontAwesomeIcon)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  mix-blend-mode: difference;
   z-index: 5;
   color: white;
-  filter: brightness(1.5);
+  filter: brightness(1.25);
+`
+
+const VideoCover = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.25);
 `
 
 export function Video(props) {
   const { url, double } = props
-  const [playing, setPlaying] = useState(false)
 
+  const [playing, setPlaying] = useState(false)
   const toggle = useCallback(() => setPlaying(!playing), [playing])
 
   return (
     <Container onClick={toggle} double={double}>
       <ReactPlayer url={url} playing={playing} />
+      {!playing && <VideoCover />}
       {!playing && <Indicator icon="play" />}
     </Container>
   )

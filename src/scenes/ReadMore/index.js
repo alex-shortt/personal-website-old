@@ -1,9 +1,8 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components/macro"
-import { Route, Switch, Redirect } from "react-router-dom"
+import { Redirect } from "react-router-dom"
 
 import SceneContainerBase from "components/SceneContainer"
-import Menu from "scenes/Menu"
 import Helmet from "components/Helmet"
 import Navbar from "components/Navbar"
 
@@ -25,35 +24,45 @@ const Content = styled.div`
 
   @media screen and (max-width: 850px) {
     padding: 25px 10px;
-  }
+  
 `
+
+const ArtContent = props => {
+  const { id } = props
+
+  if (id === "latent-explorer") {
+    return <LatentExplorer />
+  }
+  if (id === "foundation") {
+    return <Foundation />
+  }
+  if (id === "mediated-world") {
+    return <MediatedWorld />
+  }
+
+  return <Redirect to="/art" />
+}
 
 export default function ReadMore(props) {
   const {
     match: {
       params: { id }
-    },
-    location
+    }
   } = props
 
   const piece = pieces.find(pic => pic.id === id)
 
-  if (!piece) {
-    return <Redirect to="/art" />
-  }
+  // dont' ask me why, but this delay is needed to render the component
+  const [show, setShow] = useState(false)
+  useEffect(() => {
+    setTimeout(() => setShow(true), 500)
+  }, [])
 
   return (
     <SceneContainer>
       <Helmet title={piece.title} />
       <Navbar location={piece.title.toLowerCase()} backLink="/art" />
-      <Content>
-        <Switch location={location}>
-          <Route path="/art/latent-explorer" exact component={LatentExplorer} />
-          <Route path="/art/foundation" exact component={Foundation} />
-          <Route path="/art/mediated-world" exact component={MediatedWorld} />
-          <Route path="/" exact component={Menu} />
-        </Switch>
-      </Content>
+      <Content>{show && <ArtContent id={id} />}</Content>
     </SceneContainer>
   )
 }

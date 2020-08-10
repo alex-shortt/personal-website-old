@@ -5,7 +5,6 @@ import {
   Switch,
   Redirect
 } from "react-router-dom"
-import styled from "styled-components/macro"
 import useReactRouter from "use-react-router"
 
 import { EnvironmentProvider } from "services/environment"
@@ -26,7 +25,7 @@ import ReadMore from "./scenes/ReadMore"
 const GoogleAnalytics = () => {
   const { location } = useReactRouter()
   useEffect(() => GA.pageview(location.pathname), [location])
-  return <> </>
+  return null
 }
 
 export default function App() {
