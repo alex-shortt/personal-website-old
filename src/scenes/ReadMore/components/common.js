@@ -56,9 +56,16 @@ export const ImageContainer = styled.div`
 
 export const Image = styled.img`
   margin: 15px;
-  max-width: 350px;
-  max-height: 500px;
   object-fit: contain;
+  width: 95%;
+  max-width: ${props => (props.double ? "800px" : "400px")};
+  max-height: 500px;
+  position: relative;
+  cursor: pointer;
+
+  @media screen and (max-width: 400px) {
+    margin: 10px 8px;
+  }
 `
 
 export const ReactPlayer = styled(ReactPlayerBase)`
@@ -66,7 +73,11 @@ export const ReactPlayer = styled(ReactPlayerBase)`
   height: 100% !important;
 
   & > video {
-    object-fit: contain;
+    object-fit: cover;
+  }
+
+  & > video::-internal-media-controls-overlay-cast-button {
+    display: none;
   }
 `
 
@@ -77,6 +88,10 @@ export const Container = styled.div`
   max-height: 500px;
   position: relative;
   cursor: pointer;
+
+  @media screen and (max-width: 400px) {
+    margin: 10px 8px;
+  }
 `
 
 export const Indicator = styled(FontAwesomeIcon)`

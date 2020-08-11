@@ -200,8 +200,8 @@ export class ThreeScene {
     }
 
     if (offset) {
-      camera.position.x = 50 * (offset.x - 0.5)
-      camera.position.y = Sizer.getCameraHeight() + 50 * (offset.y - 0.5)
+      camera.position.x = 70 * (offset.x - 0.5)
+      camera.position.y = Sizer.getCameraHeight() + 70 * (offset.y - 0.5)
       camera.lookAt(0, Sizer.getCameraHeight(), 900)
     }
 

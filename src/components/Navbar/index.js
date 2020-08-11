@@ -35,6 +35,32 @@ const Location = styled.p`
 
 const BackLink = styled(Link)`
   ${TextStyle};
+
+  color: black;
+  transition: color ease 0.3s;
+  position: relative;
+  text-decoration: none;
+  padding: 2px 4px;
+
+  &:hover {
+    color: white;
+
+    &::after {
+      height: 100%;
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 2px;
+    left: 0;
+    bottom: 0;
+    background-color: black;
+    transition: all ease 0.3s;
+  }
 `
 
 export default function Navbar(props) {
