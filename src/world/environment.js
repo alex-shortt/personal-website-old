@@ -103,9 +103,10 @@ export default class Environment {
     const { time: overrideTime, sun } = this
 
     // update sun pos based on time
-    const month = new Date().getMonth()
-    const hours = new Date().getHours()
-    const mins = new Date().getMinutes()
+    const date = new Date()
+    const month = date.getMonth()
+    const hours = date.getHours()
+    const mins = date.getMinutes()
     const time =
       overrideTime === 0 ? (hours + mins / 60).toFixed(2) : overrideTime
 

@@ -55,7 +55,7 @@ export default function ReadMore(props) {
   // dont' ask me why, but this delay is needed to render the component
   const [show, setShow] = useState(false)
   useEffect(() => {
-    setTimeout(() => setShow(true), 500)
+    setTimeout(() => setShow(true), 100)
   }, [])
 
   return (

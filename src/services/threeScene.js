@@ -1,6 +1,10 @@
 import * as THREE from "three"
 import Stats from "stats.js"
 import * as dat from "dat.gui"
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer"
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass"
+import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass"
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass"
 
 import NoiseBox from "world/noisebox"
 import Environment from "world/environment"
@@ -16,9 +20,11 @@ export class ThreeScene {
 
     // scene
     const scene = new THREE.Scene()
+    const light = new THREE.AmbientLight(0x404040, 0.82) // soft white light
+    scene.add(light)
 
     // camera
-    const camera = new THREE.PerspectiveCamera(50, width / height, 100, 5000)
+    const camera = new THREE.PerspectiveCamera(50, width / height, 200, 5000)
     camera.position.set(0, Sizer.getCameraHeight(), 0)
     camera.lookAt(0, camera.position.y, 1200)
 
@@ -35,6 +41,11 @@ export class ThreeScene {
 
     // DisplayRenderer
     const displayRenderer = new DisplayRenderer(scene, containerRef)
+
+    // post processing
+    const composer = new EffectComposer(renderer)
+    composer.addPass(new RenderPass(scene, camera))
+    this.setupPostProcessing(renderer, composer)
 
     // stats
     if (SHOW_DEV_TOOLS) {
@@ -54,6 +65,7 @@ export class ThreeScene {
     this.scene = scene
     this.camera = camera
     this.renderer = renderer
+    this.composer = composer
     this.displayRenderer = displayRenderer
 
     // events
@@ -71,18 +83,20 @@ export class ThreeScene {
       camera,
       environment,
       noisebox,
-      displayRenderer
+      displayRenderer,
+      composer
     } = this
     const { clientWidth: width, clientHeight: height } = containerRef
 
     // resize renderers
     renderer.setSize(width, height)
+    composer.setSize(width, height)
     displayRenderer.handleResize(width, height)
 
     // camera
     camera.aspect = width / height
     camera.updateProjectionMatrix()
-    camera.position.set(0, Sizer.getCameraHeight(), 0)
+    camera.position.y = Sizer.getCameraHeight()
     camera.lookAt(0, camera.position.y, 900)
 
     // resize classes
@@ -153,10 +167,6 @@ export class ThreeScene {
     this.touchOffsetY += clientY - touchStartY
     this.touchOffsetY = Math.min(this.touchOffsetY, window.innerHeight / 2)
     this.touchOffsetY = Math.max(this.touchOffsetY, -window.innerHeight / 2)
-
-    console.log(
-      `done: ${this.touchOffsetX.toFixed(2)}, ${this.touchOffsetY.toFixed(2)}`
-    )
   }
 
   handleMouseMove = e =>
@@ -192,7 +202,8 @@ export class ThreeScene {
       environment,
       stats,
       offset,
-      displayRenderer
+      displayRenderer,
+      composer
     } = this
 
     if (SHOW_DEV_TOOLS) {
@@ -207,7 +218,8 @@ export class ThreeScene {
 
     noisebox.render(renderer, scene)
     environment.render(renderer, scene)
-    renderer.render(scene, camera)
+    // renderer.render(scene, camera)
+    composer.render()
     displayRenderer.render(scene, camera)
 
     if (SHOW_DEV_TOOLS) {
@@ -215,6 +227,22 @@ export class ThreeScene {
     }
 
     this.requestID = window.requestAnimationFrame(this.startAnimationLoop)
+  }
+
+  setupPostProcessing = (renderer, composer) => {
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      0.4,
+      0.2,
+      0.93
+    )
+    composer.addPass(bloomPass)
+
+    const pass = new SMAAPass(
+      window.innerWidth * renderer.getPixelRatio(),
+      window.innerHeight * renderer.getPixelRatio()
+    )
+    composer.addPass(pass)
   }
 
   unmount = () => {

@@ -16,7 +16,8 @@ export default class DisplayRenderer {
     cssRenderer.domElement.style.left = "50%"
     cssRenderer.domElement.style.transform = "translate(-50%, -50%)"
     cssRenderer.domElement.style.zIndex = 5
-    containerRef.prepend(cssRenderer.domElement)
+    cssRenderer.domElement.style.mixBlendMode = "overlay"
+    containerRef.append(cssRenderer.domElement)
 
     this.cssRenderer = cssRenderer
     this.scene = scene

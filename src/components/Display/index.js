@@ -7,7 +7,6 @@ const Container = styled.div`
   width: 0;
   height: 0;
   z-index: 2;
-  opacity: 0.75;
 `
 const Wrapper = styled.div`
   width: 100%;
