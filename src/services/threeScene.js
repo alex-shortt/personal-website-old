@@ -3,8 +3,9 @@ import Stats from "stats.js"
 import * as dat from "dat.gui"
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer"
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass"
-import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass"
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass"
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass"
+import { FXAAShader } from "three/examples/jsm/shaders/FXAAShader"
 
 import NoiseBox from "world/noisebox"
 import Environment from "world/environment"
@@ -20,11 +21,12 @@ export class ThreeScene {
 
     // scene
     const scene = new THREE.Scene()
+    scene.fog = new THREE.Fog(0xaaaaaa, 600, 1750)
     const light = new THREE.AmbientLight(0x404040, 0.82) // soft white light
     scene.add(light)
 
     // camera
-    const camera = new THREE.PerspectiveCamera(50, width / height, 200, 5000)
+    const camera = new THREE.PerspectiveCamera(50, width / height, 200, 2000)
     camera.position.set(0, Sizer.getCameraHeight(), 0)
     camera.lookAt(0, camera.position.y, 1200)
 
@@ -238,11 +240,14 @@ export class ThreeScene {
     )
     composer.addPass(bloomPass)
 
-    const pass = new SMAAPass(
-      window.innerWidth * renderer.getPixelRatio(),
-      window.innerHeight * renderer.getPixelRatio()
-    )
-    composer.addPass(pass)
+    const fxaaPass = new ShaderPass(FXAAShader)
+    const pixelRatio = renderer.getPixelRatio()
+    fxaaPass.material.uniforms.resolution.value.x =
+      1 / (window.innerWidth * pixelRatio)
+    fxaaPass.material.uniforms.resolution.value.y =
+      1 / (window.innerHeight * pixelRatio)
+
+    composer.addPass(fxaaPass)
   }
 
   unmount = () => {
